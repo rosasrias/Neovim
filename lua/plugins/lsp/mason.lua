@@ -1,6 +1,6 @@
 return {
 	"mason-org/mason.nvim",
-	event = { "BufReadPost", "BufNewFile" },
+	lazy = false,
 	cmd = { "Mason", "MasonInstall", "MasonUpdate" }, -- Lazy-load on these commands
 	dependencies = {
 		"mason-org/mason-lspconfig.nvim", -- Official LSP config extension
