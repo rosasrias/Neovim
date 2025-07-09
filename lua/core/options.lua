@@ -4,6 +4,7 @@ local g = vim.g
 
 o.laststatus = 3
 o.showmode = false
+o.splitkeep = "screen"
 o.wrap = false
 
 o.clipboard = "unnamedplus"
