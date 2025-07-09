@@ -1,6 +1,5 @@
 local fn = vim.fn
 local api = vim.api
-
 local ns = require("colorify.state").ns
 local conf = {
 	enabled = true,
