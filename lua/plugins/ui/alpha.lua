@@ -153,10 +153,10 @@ return {
 		local function footer()
 			local stats = require("lazy").stats()
 			local plugins_count = stats.count or 0
-			local time_start = math.floor(stats.startuptime) .. " ms"
+			--local time_start = math.floor(stats.startuptime) .. " ms"
 
 			return {
-				"  Plugins: " .. plugins_count .. " in " .. "󱦟 Time: " .. time_start,
+				"  Plugins: " .. plugins_count,
 			}
 		end
 
