@@ -22,6 +22,7 @@ local icon_colors = {
 	html = colors.yellow,
 	jpeg = colors.sun,
 	js = colors.yellow,
+	ts = colors.cyan,
 	Java = colors.orange,
 	Dart = colors.blue,
 	Vue = colors.green,

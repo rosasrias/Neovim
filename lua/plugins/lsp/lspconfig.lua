@@ -117,7 +117,6 @@ return {
 			"texlab",
 			"marksman",
 			"taplo",
-			"emmet_ls",
 			"csharp_ls",
 			"taplo",
 		}
@@ -147,35 +146,39 @@ return {
 			},
 		})
 
-		-- lspconfig.emmet_ls.setup({
-		-- 	on_attach = M.on_attach,
-		-- 	capabilities = M.capabilities,
-		-- 	filetypes = {
-		-- 		"html",
-		-- 		"css",
-		-- 		"scss",
-		-- 		"javascript",
-		-- 		"javascriptreact",
-		-- 		"typescript",
-		-- 		"typescriptreact",
-		-- 		"vue",
-		-- 		"svelte",
-		-- 		"php",
-		-- 		"twig",
-		-- 	},
-		-- 	initialize_options = {
-		-- 		html = {
-		-- 			options = {
-		-- 				["bem.enabled"] = true,
-		-- 			},
-		-- 		},
-		-- 		php = {
-		-- 			options = {
-		-- 				["bem.enabled"] = true,
-		-- 			},
-		-- 		},
-		-- 	},
-		-- })
+		lspconfig.emmet_ls.setup({
+			on_attach = function(client, bufnr)
+				M.on_attach(client, bufnr)
+				client.server_capabilities.documentFormattingProvider = false
+				client.server_capabilities.documentRangeFormattingProvider = false
+			end,
+			capabilities = M.capabilities,
+			filetypes = {
+				"html",
+				"css",
+				"scss",
+				"javascript",
+				"javascriptreact",
+				"typescript",
+				"typescriptreact",
+				"vue",
+				"svelte",
+				"php",
+				"twig",
+			},
+			initialize_options = {
+				html = {
+					options = {
+						["bem.enabled"] = true,
+					},
+				},
+				php = {
+					options = {
+						["bem.enabled"] = true,
+					},
+				},
+			},
+		})
 
 		lspconfig.intelephense.setup({
 			on_attach = M.on_attach,

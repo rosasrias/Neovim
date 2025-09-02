@@ -19,6 +19,7 @@ return {
 			html = { "prettier" },
 			javascript = { "prettier" },
 			typescript = { "prettier" },
+			tsx = { "prettier" },
 			c_sharp = { "csharpier" },
 			json = { "prettier" },
 			yaml = { "yamlfix" },
