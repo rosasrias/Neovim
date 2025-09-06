@@ -2,23 +2,25 @@ local colors = require("themes").get_theme_tb("base_30")
 local blend = require("themes.colors").blend
 
 local theme = {
-	LualineNothing = { bg = colors.black2 },
-	LualineNothing2 = { bg = colors.black2 },
-	LualineSeparator = { bg = colors.black2 },
-	LualineDiffAddIcon = { fg = colors.green, bg = colors.black2 },
-	LualineDiffChangeIcon = { fg = colors.yellow, bg = colors.black2 },
-	LualineDiffRemoveIcon = { fg = colors.red, bg = colors.black2 },
-	LualineDiffAddText = { fg = colors.green, bg = colors.black2 },
-	LualineDiffChangeText = { fg = colors.yellow, bg = colors.black2 },
-	LualineDiffRemoveText = { fg = colors.red, bg = colors.black2 },
-	LualineDiagnosticsErrorIcon = { fg = colors.red, bg = colors.black2 },
-	LualineDiagnosticsWarnIcon = { fg = colors.yellow, bg = colors.black2 },
-	LualineDiagnosticsInfoIcon = { fg = colors.blue, bg = colors.black2 },
-	LualineDiagnosticsHintIcon = { fg = colors.teal, bg = colors.black2 },
-	LualineDiagnosticsErrorText = { fg = colors.red, bg = colors.black2 },
-	LualineDiagnosticsWarnText = { fg = colors.yellow, bg = colors.black2 },
-	LualineDiagnosticsInfoText = { fg = colors.blue, bg = colors.black2 },
-	LualineDiagnosticsHintText = { fg = colors.teal, bg = colors.black2 },
+	StatusLine = { bg = colors.one_bg },
+	StatusLineNC = { bg = colors.one_bg },
+	LualineNothing = { bg = colors.one_bg },
+	LualineNothing2 = { bg = colors.one_bg },
+	LualineSeparator = { bg = colors.one_bg },
+	LualineDiffAddIcon = { fg = colors.green, bg = colors.one_bg },
+	LualineDiffChangeIcon = { fg = colors.yellow, bg = colors.one_bg },
+	LualineDiffRemoveIcon = { fg = colors.red, bg = colors.one_bg },
+	LualineDiffAddText = { fg = colors.green, bg = colors.one_bg },
+	LualineDiffChangeText = { fg = colors.yellow, bg = colors.one_bg },
+	LualineDiffRemoveText = { fg = colors.red, bg = colors.one_bg },
+	LualineDiagnosticsErrorIcon = { fg = colors.red, bg = colors.one_bg },
+	LualineDiagnosticsWarnIcon = { fg = colors.yellow, bg = colors.one_bg },
+	LualineDiagnosticsInfoIcon = { fg = colors.blue, bg = colors.one_bg },
+	LualineDiagnosticsHintIcon = { fg = colors.teal, bg = colors.one_bg },
+	LualineDiagnosticsErrorText = { fg = colors.red, bg = colors.one_bg },
+	LualineDiagnosticsWarnText = { fg = colors.yellow, bg = colors.one_bg },
+	LualineDiagnosticsInfoText = { fg = colors.blue, bg = colors.one_bg },
+	LualineDiagnosticsHintText = { fg = colors.teal, bg = colors.one_bg },
 
 	-- Grupos activos
 	LualineDotIcon = { bg = colors.blue, fg = colors.black },
@@ -27,7 +29,7 @@ local theme = {
 	LualineFilenameSeparator = { bg = colors.black, fg = colors.one_bg },
 	LualineDirIcon = { fg = colors.black, bg = colors.red },
 	LualineDirText = { fg = colors.red, bg = blend(colors.red, colors.black, 0.1) },
-	LualineDirSeparator = { bg = colors.black2, fg = colors.red },
+	LualineDirSeparator = { bg = colors.one_bg, fg = colors.red },
 
 	-- Lualine por modo
 	LualineModeNormalIcon = { fg = colors.black, bg = colors.blue },
@@ -72,16 +74,16 @@ local theme = {
 
 	LualineProgressIcon = { bg = colors.green, fg = colors.black },
 	LualineProgressText = { bg = blend(colors.green, colors.black, 0.1), fg = colors.green },
-	LualineProgressSeparator = { bg = colors.black2, fg = colors.green },
+	LualineProgressSeparator = { bg = colors.one_bg, fg = colors.green },
 	LualineBranchIcon = { bg = colors.black, fg = blend(colors.white, colors.black, 0.6) },
 	LualineBranchText = { bg = colors.black, fg = blend(colors.white, colors.black, 0.6) },
-	LualineBranchSeparator = { bg = colors.black2, fg = colors.black },
+	LualineBranchSeparator = { bg = colors.one_bg, fg = colors.black },
 	LualineLspIcon = { fg = colors.black, bg = colors.purple },
 	LualineLspText = { fg = colors.purple, bg = blend(colors.purple, colors.black, 0.1) },
-	LualineLspSeparator = { bg = colors.black2, fg = colors.purple },
+	LualineLspSeparator = { bg = colors.one_bg, fg = colors.purple },
 	LualineVenvIcon = { fg = colors.black, bg = colors.yellow },
 	LualineVenvText = { fg = colors.yellow, bg = blend(colors.yellow, colors.black, 0.1) },
-	LualineVenvSeparator = { bg = colors.black2, fg = colors.yellow },
+	LualineVenvSeparator = { bg = colors.one_bg, fg = colors.yellow },
 
 	-- Grupos inactivos
 	LualineInactiveFilename = { bg = colors.one_bg, fg = colors.grey },
@@ -94,7 +96,9 @@ local theme = {
 
 for _, section in ipairs({ "a", "b", "c", "x", "y", "z" }) do
 	for _, mode in ipairs({ "normal", "insert", "visual", "command", "replace", "inactive", "terminal" }) do
-		theme["lualine_" .. section .. "_" .. mode] = { bg = colors.black2, fg = colors.black2 }
+		if not theme["lualine_" .. section .. "_" .. mode] then
+			theme["lualine_" .. section .. "_" .. mode] = { bg = colors.one_bg, fg = colors.grey }
+		end
 	end
 end
 
