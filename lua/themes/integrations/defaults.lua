@@ -54,8 +54,6 @@ local defaults = {
 	healthSuccess = { bg = colors.green, fg = colors.black },
 	WinBar = { bg = "NONE" },
 	WinBarNC = { bg = "NONE" },
-	StatusLine = { bg = colors.black2, fg = colors.black2 },
-	StatusLineNC = { bg = colors.black2, fg = colors.black2 },
 
 	-- lazy.nvim
 	LazyH1 = { bg = colors.green, fg = colors.black },
