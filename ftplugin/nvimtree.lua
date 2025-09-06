@@ -1,10 +1,8 @@
--- ftplugin/nvimtree.lua
 local ok, DirectoryNode = pcall(require, "nvim-tree.node.directory")
 if not ok then
 	return
 end
 
--- 🔹 Preset de carpetas -> { highlight, icon }
 local folder_styles = {
 	src = { hl = "NvimTreeFolderSrc", icon = "󰣞" },
 	public = { hl = "NvimTreeFolderPublic", icon = "󰚝" },
@@ -27,7 +25,6 @@ local folder_styles = {
 	vendor = { hl = "NvimTreeFolderVendor", icon = "󰉐" },
 }
 
--- Resolver estilo (hl + icono)
 local function resolve_folder_style(name, fallback_hl, fallback_icon)
 	local lname = name:lower()
 	if folder_styles[lname] then
@@ -41,7 +38,7 @@ local function resolve_folder_style(name, fallback_hl, fallback_icon)
 	return fallback_hl, fallback_icon
 end
 
--- Patch nombre
+-- Patch name
 local orig_name = DirectoryNode.highlighted_name
 function DirectoryNode:highlighted_name()
 	local res = orig_name(self)
@@ -50,7 +47,7 @@ function DirectoryNode:highlighted_name()
 	return res
 end
 
--- Patch icono
+-- Patch icon
 local orig_icon = DirectoryNode.highlighted_icon
 function DirectoryNode:highlighted_icon()
 	local res = orig_icon(self)
