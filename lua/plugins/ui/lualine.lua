@@ -1,3 +1,5 @@
+local colors = require("themes").get_theme_tb("base_30")
+
 return {
 	"nvim-lualine/lualine.nvim",
 	lazy = true,
@@ -5,13 +7,39 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
 		options = {
-			theme = "auto",
-			icons_enabled = false,
+			theme = {
+				normal = {
+					a = { fg = colors.black, bg = colors.blue, gui = "bold" },
+					b = { fg = colors.white, bg = colors.one_bg },
+					c = { fg = colors.white, bg = colors.one_bg },
+				},
+				insert = {
+					a = { fg = colors.black, bg = colors.green, gui = "bold" },
+					b = { fg = colors.white, bg = colors.one_bg },
+					c = { fg = colors.white, bg = colors.one_bg },
+				},
+				visual = {
+					a = { fg = colors.black, bg = colors.purple, gui = "bold" },
+					b = { fg = colors.white, bg = colors.one_bg },
+					c = { fg = colors.white, bg = colors.one_bg },
+				},
+				replace = {
+					a = { fg = colors.black, bg = colors.red, gui = "bold" },
+					b = { fg = colors.white, bg = colors.one_bg },
+					c = { fg = colors.white, bg = colors.one_bg },
+				},
+				inactive = {
+					a = { fg = colors.grey, bg = colors.black },
+					b = { fg = colors.grey, bg = colors.black },
+					c = { fg = colors.grey, bg = colors.black },
+				},
+			},
 			globalstatus = true,
+			icons_enabled = false,
 			component_separators = "",
 			section_separators = "",
-			refresh = { statusline = 100 },
 		},
+
 		sections = {
 			lualine_a = {
 				{
