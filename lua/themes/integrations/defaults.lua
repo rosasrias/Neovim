@@ -78,10 +78,6 @@ local defaults = {
 	LazyReasonSource = { fg = colors.cyan },
 	LazyReasonImport = { fg = colors.white },
 	LazyProgressDone = { fg = colors.green },
-
-	NvDashAscii = { fg = colors.blue },
-	NvDashButtons = { fg = colors.light_grey },
-	NvDashFooter = { fg = colors.red },
 }
 
 return defaults
