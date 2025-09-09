@@ -1,0 +1,74 @@
+# Archivos temporales de Neovim
+*.swp
+*.swo
+*~
+.*.swp
+.*.swo
+.*.un~
+
+# Directorio de plugins (si usas packer.nvim, lazy.nvim, etc.)
+lua/packer_compiled.lua
+plugin/packer_compiled.vim
+
+# Cache de plugins
+.cache/
+.lsp/
+
+# Session files
+Session.vim
+
+# Netrw bookmarks
+.netrwhist
+
+# Backup files
+*.bak
+*.backup
+
+# Lock files
+*.lock
+
+# Directorios de instalación de plugins
+pack/packer/start/*/
+pack/packer/opt/*/
+
+# Si usas lazy.nvim
+lazy-lock.json
+
+# Logs
+*.log
+nvim.log
+
+# Archivos de estado
+*.state
+
+# Archivos de sesión
+*.session
+
+# Directorio de snippets personales (si no quieres versionarlos)
+snippets/
+
+# Archivos de configuración local (máquina específica)
+local.vim
+local.lua
+.env*
+.env
+
+# Directorio de undo history (si usas persistencia de undo)
+undo/
+
+# Archivos de swap de LSP
+*.lsp.swp
+
+# Node modules (si tienes plugins que los usan)
+node_modules/
+
+# Python virtual environments
+venv/
+.env/
+
+# Archivos de packer compile
+packer_compiled.vim
+packer_compiled.lua
+
+# Archivos de lazy.nvim compile
+lazy/cache/
