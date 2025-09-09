@@ -103,7 +103,7 @@ return {
 		}
 
 		-- Set the header
-		dashboard.section.header.val = vim.split(logos.TEXT, "\n")
+		dashboard.section.header.val = vim.split(logos.ANYA, "\n")
 		dashboard.section.header.opts.hl = "AlphaHeader"
 
 		-- Define buttons
@@ -153,10 +153,10 @@ return {
 		local function footer()
 			local stats = require("lazy").stats()
 			local plugins_count = stats.count or 0
-			--local time_start = math.floor(stats.startuptime) .. " ms"
+			local time_start = math.floor(stats.startuptime) .. " ms"
 
 			return {
-				"  Plugins: " .. plugins_count,
+				"  Plugins: " .. plugins_count .. " en " .. time_start,
 			}
 		end
 
