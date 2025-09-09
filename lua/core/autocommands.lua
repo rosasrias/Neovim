@@ -90,3 +90,25 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 vim.api.nvim_create_user_command("Ranger", function()
 	require("core.functions").ranger_toggle()
 end, { desc = "Open/Toggle Ranger" })
+
+-- Use 4 spaces for Python
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("PythonIndent", { clear = true }),
+	pattern = "python",
+	callback = function()
+		vim.bo.shiftwidth = 4
+		vim.bo.tabstop = 4
+	end,
+	desc = "Set indentation to 4 spaces for Python",
+})
+
+-- Use 2 spaces for Lua and JavaScript files
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("IndentSettings", { clear = true }),
+	pattern = { "lua", "javascript", "typescript", "json", "yaml", "html", "css" },
+	callback = function()
+		vim.bo.shiftwidth = 2
+		vim.bo.tabstop = 2
+	end,
+	desc = "Set indentation to 2 spaces for common web dev files",
+})

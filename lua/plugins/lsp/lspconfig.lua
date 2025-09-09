@@ -10,8 +10,14 @@ return {
 		local M = {}
 
 		M.on_init = function(client, _)
-			if client.supports_method("textDocument/semanticTokens") then
-				client.server_capabilities.semanticTokensProvider = nil
+			if vim.fn.has("nvim-0.11") ~= 1 then
+				if client.supports_method("textDocument/semanticTokens") then
+					client.server_capabilities.semanticTokensProvider = nil
+				end
+			else
+				if client:supports_method("textDocument/semanticTokens") then
+					client.server_capabilities.semanticTokensProvider = nil
+				end
 			end
 		end
 
@@ -21,6 +27,8 @@ return {
 			local function opts(desc)
 				return { buffer = bufnr, desc = "LSP " .. desc }
 			end
+
+			require("plugins.lsp.extra.signature").setup(client, bufnr)
 
 			local mappings = {
 				{ "n", "K", vim.lsp.buf.hover, "Hover" },
@@ -43,7 +51,7 @@ return {
 					vim.lsp.buf.type_definition,
 					"Go to type definition",
 				},
-				{ "n", "<leader>ra", require("plugins.lsp.extra.renamer").lsp_rename, "Renamer" },
+				{ "n", "<leader>ra", require("plugins.lsp.extra.renamer"), "Renamer" },
 				{ { "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code action" },
 				{ "n", "gr", vim.lsp.buf.references, "Show references" },
 			}
@@ -226,24 +234,24 @@ return {
 		-- 	end,
 		-- })
 
-		lspconfig.sqlls.setup({
-			on_attach = M.on_attach,
-			capabilities = M.capabilities,
-			filetypes = { "sql", "mysql" },
-			root_dir = function()
-				return vim.fn.getcwd()
-			end,
-			settings = {
-				sqlLanguageServer = {
-					connections = {
-						{
-							driver = "mysql",
-							dataSourceName = "root:password@tcp(localhost:3306)/phpmyadmin",
-						},
-					},
-				},
-			},
-		})
+		-- lspconfig.sqlls.setup({
+		-- 	on_attach = M.on_attach,
+		-- 	capabilities = M.capabilities,
+		-- 	filetypes = { "sql", "mysql" },
+		-- 	root_dir = function()
+		-- 		return vim.fn.getcwd()
+		-- 	end,
+		-- 	settings = {
+		-- 		sqlLanguageServer = {
+		-- 			connections = {
+		-- 				{
+		-- 					driver = "mysql",
+		-- 					dataSourceName = "root:password@tcp(localhost:3306)/phpmyadmin",
+		-- 				},
+		-- 			},
+		-- 		},
+		-- 	},
+		-- })
 		return M
 	end,
 }

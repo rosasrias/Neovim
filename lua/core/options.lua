@@ -6,6 +6,12 @@ o.laststatus = 3
 o.showmode = false
 o.splitkeep = "screen"
 o.wrap = false
+o.encoding = "utf-8"
+o.fileencoding = "utf-8"
+o.swapfile = false
+o.backup = false
+o.writebackup = false
+o.ttyfast = true
 
 o.clipboard = "unnamedplus"
 o.cursorline = true
@@ -59,3 +65,18 @@ g.code_action_menu_window_border = "single"
 g.nvimTheme = cfg.theme
 g.themeCache = vim.fn.stdpath("data") .. "/colors_data/"
 g.transparency = cfg.transparency
+
+if vim.loop.os_uname().sysname == "Windows_NT" then
+	g.clipboard = {
+		name = "WindowsClipboard",
+		copy = {
+			["+"] = "clip.exe",
+			["*"] = "clip.exe",
+		},
+		paste = {
+			["+"] = "powershell.exe -NoProfile -Command Get-Clipboard",
+			["*"] = "powershell.exe -NoProfile -Command Get-Clipboard",
+		},
+		cache_enabled = 0,
+	}
+end
