@@ -1,8 +1,8 @@
 local colors = require("themes").get_theme_tb("base_30")
 
 return {
-	IblChar = { fg = colors.one_bg2 },
-	IblScopeChar = { fg = colors.one_bg2 },
+	IblChar = { fg = colors.one_bg3 },
+	IblScopeChar = { fg = colors.one_bg3 },
 	["@ibl.scope.underline.1"] = { bg = colors.black2 },
 	["@ibl.scope.underline.2"] = { bg = colors.black2 },
 	["@ibl.scope.underline.3"] = { bg = colors.black2 },
