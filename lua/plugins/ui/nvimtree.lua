@@ -34,6 +34,13 @@ return {
 				glyphs = {
 					default = " ",
 					symlink = " ",
+					folder = {
+						default = "",
+						empty = "",
+						empty_open = "",
+						open = "",
+						symlink = "",
+					},
 					git = {
 						deleted = " ",
 						unstaged = " ",
