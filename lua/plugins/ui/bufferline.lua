@@ -1,3 +1,4 @@
+local colors = require("themes").get_theme_tb "base_30"
 return {
   "akinsho/bufferline.nvim",
   event = { "BufReadPost", "BufNewFile", "BufAdd" },
@@ -72,7 +73,26 @@ return {
         end,
       },
     },
-    highlights = require "themes.integrations.bufferline",
+    highlights = {
+      fill = { bg = colors.black },
+      background = { fg = colors.grey, bg = colors.black },
+
+      buffer_visible = { fg = colors.grey_fg, bg = colors.black },
+      buffer_selected = { fg = colors.blue, bg = colors.one_bg, bold = true },
+
+      separator = { fg = colors.black, bg = colors.black },
+      separator_selected = { fg = colors.one_bg, bg = colors.one_bg },
+      separator_visible = { fg = colors.black, bg = colors.black },
+
+      indicator_selected = { fg = colors.blue, bg = colors.one_bg },
+      modified = { fg = colors.orange, bg = colors.black },
+      modified_visible = { fg = colors.orange, bg = colors.black },
+      modified_selected = { fg = colors.orange, bg = colors.one_bg },
+
+      close_button = { fg = colors.light_grey, bg = colors.black },
+      close_button_visible = { fg = colors.light_grey, bg = colors.black },
+      close_button_selected = { fg = colors.red, bg = colors.one_bg },
+    },
   },
   config = function(_, opts)
     function _G.SplitBuffer()
@@ -103,17 +123,6 @@ return {
     -- Inicializar bufferline
     ---@diagnostic disable-next-line: different-requires
     require("bufferline").setup(opts)
-
-    -- 👇 Definir highlights custom (que no son de Bufferline oficial)
-    local colors = require("themes").get_theme_tb "base_30"
-    local blend = require("themes.colors").blend
-
-    vim.api.nvim_set_hl(0, "BufferlineRun", { fg = colors.teal, bg = blend(colors.teal, colors.black, 0.15) })
-    vim.api.nvim_set_hl(0, "BufferlineSplit", { fg = colors.green, bg = blend(colors.green, colors.black, 0.15) })
-    vim.api.nvim_set_hl(0, "BufferlineTheme", { fg = colors.yellow, bg = blend(colors.yellow, colors.black, 0.15) })
-    vim.api.nvim_set_hl(0, "BufferlineTransparency", { fg = colors.blue, bg = blend(colors.blue, colors.black, 0.15) })
-    vim.api.nvim_set_hl(0, "BufferlineCloseAll", { fg = colors.red, bg = blend(colors.red, colors.black, 0.15) })
-
     -- Keymaps
     local map = vim.keymap.set
     local bd = require("mini.bufremove").delete

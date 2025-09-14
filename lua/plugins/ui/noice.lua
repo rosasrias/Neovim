@@ -1,6 +1,6 @@
 return {
   "folke/noice.nvim",
-  event = { "VeryLazy", "UIEnter" }, -- Carga diferida pero antes de la interfaz
+  event = { "VeryLazy" }, -- Carga diferida pero antes de la interfaz
   dependencies = {
     {
       "MunifTanjim/nui.nvim",

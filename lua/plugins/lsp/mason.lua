@@ -1,56 +1,48 @@
 return {
   "mason-org/mason.nvim",
-  lazy = false,
-  cmd = { "Mason", "MasonInstall", "MasonUpdate" }, -- Lazy-load on these commands
+  event = { "BufReadPre", "BufNewFile" }, -- carga antes de que el buffer se use
+  cmd = { "Mason", "MasonInstall", "MasonUpdate" }, -- sigue lazy en estos comandos
   dependencies = {
-    "mason-org/mason-lspconfig.nvim", -- Official LSP config extension
-    "neovim/nvim-lspconfig", -- Base LSP configuration
+    "mason-org/mason-lspconfig.nvim", -- Extensión oficial LSP
+    "neovim/nvim-lspconfig", -- Config base de LSP
   },
   opts = {
-    -- UI configuration
     ui = {
       icons = {
-        package_pending = " ", -- Pending installation
-        package_installed = " ", -- Successfully installed
-        package_uninstalled = " ", -- Not installed
+        package_pending = " ", -- Pending
+        package_installed = " ", -- Installed
+        package_uninstalled = " ", -- Not installed
       },
-      -- Key mappings for interactive UI
       keymaps = {
-        toggle_server_expand = "<CR>", -- Expand/collapse server details
-        install_server = "i", -- Install selected server
-        update_server = "u", -- Update server
-        check_server_version = "c", -- Check for version updates
-        update_all_servers = "U", -- Update all servers
-        check_outdated_servers = "C", -- Check for outdated servers
-        uninstall_server = "X", -- Uninstall server
-        cancel_installation = "<C-c>", -- Cancel current operation
+        toggle_server_expand = "<CR>",
+        install_server = "i",
+        update_server = "u",
+        check_server_version = "c",
+        update_all_servers = "U",
+        check_outdated_servers = "C",
+        uninstall_server = "X",
+        cancel_installation = "<C-c>",
       },
     },
-    -- Performance configuration
-    max_concurrent_installers = 4, -- Recommended: 4 parallel installs
+    max_concurrent_installers = 4,
   },
   config = function(_, opts)
-    -- Setup Mason core
     require("mason").setup(opts)
 
-    -- Configure LSP servers integration
     require("mason-lspconfig").setup {
-      -- Auto-install essential language servers
       ensure_installed = {
-        "lua_ls", -- Lua
-        --"ts_ls", -- TypeScript/JavaScript (corrected from ts_ls)
-        "html", -- HTML
-        "cssls", -- CSS
-        "emmet_ls", -- Emmet abbreviations
-        "pyright", -- Python
-        "clangd", -- C/C++
-        "omnisharp", -- C#
-        -- Optional servers:
-        -- "bashls",     -- Bash
-        -- "jsonls",     -- JSON
-        -- "yamlls",     -- YAML
+        "lua_ls",
+        "html",
+        "cssls",
+        "emmet_ls",
+        "pyright",
+        "clangd",
+        "omnisharp",
+        -- extras opcionales:
+        -- "bashls",
+        -- "jsonls",
+        -- "yamlls",
       },
-      -- Automatic server setup for installed LSPs
       automatic_installation = true,
     }
   end,

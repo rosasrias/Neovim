@@ -225,10 +225,9 @@ M.load_all_highlights = function()
   end
 
   -- update blankline
-  pcall(function()
-    require("ibl").update()
-    require("bufferline").update()
-  end)
+  -- pcall(function()
+  --   require("ibl").update()
+  -- end)
 
   vim.api.nvim_exec_autocmds("User", { pattern = "ThemeReload" })
 end
