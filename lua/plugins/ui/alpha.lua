@@ -10,6 +10,18 @@ return {
     local dashboard = require "alpha.themes.dashboard"
     -- ASCII art settings
     local logos = {
+      NEOVIM = [[
+
+
+
+
+  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
+]],
       TEXT = [[
 
 
@@ -107,7 +119,7 @@ return {
     }
 
     -- Set the header
-    dashboard.section.header.val = vim.split(logos.TEXT, "\n")
+    dashboard.section.header.val = vim.split(logos.NEOVIM, "\n")
     dashboard.section.header.opts.hl = "AlphaHeader"
 
     -- Define buttons
@@ -152,24 +164,18 @@ return {
     local function footer()
       local stats = require("lazy").stats()
       local plugins_count = stats.count or 0
-      local time_start = math.floor(stats.startuptime) .. " ms"
+      local time_start = string.format("%.2f ms", stats.startuptime)
 
       return {
         "  Plugins: " .. plugins_count .. " en " .. time_start,
       }
     end
 
-    dashboard.section.footer.val = {
-      "  Cargando plugins...",
-      "󱦠  Esperando datos...",
-    }
-
     vim.defer_fn(function()
       dashboard.section.footer.val = footer()
       pcall(vim.cmd.AlphaRedraw)
     end, 100)
     dashboard.section.footer.opts.hl = "AlphaFooter"
-    dashboard.section.footer.val = footer()
 
     -- Set the layout
     dashboard.config.layout = {
@@ -192,15 +198,5 @@ return {
   end,
   config = function(_, opts)
     require("alpha").setup(opts)
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "LazyVimStarted",
-      callback = function()
-        local stats = require("lazy").stats()
-        local _ = math.floor(stats.startuptime)
-        vim.schedule(function()
-          require("alpha").redraw()
-        end)
-      end,
-    })
   end,
 }
