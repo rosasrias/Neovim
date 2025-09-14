@@ -9,13 +9,14 @@ return {
   BufferLineBufferSelected = { fg = colors.blue, bg = colors.one_bg, bold = true },
 
   BufferLineSeparator = { fg = colors.black, bg = colors.black },
-  BufferLineSeparatorSelected = { fg = colors.one_bg, bg = colors.one_bg },
+  BufferLineOffsetSeparator = { fg = colors.darker_black, bg = colors.darker_black },
+  BufferLineSeparatorSelected = { fg = colors.black, bg = colors.black },
   BufferLineSeparatorVisible = { fg = colors.black, bg = colors.black },
 
   BufferLineIndicatorSelected = { fg = colors.blue, bg = colors.one_bg },
-  BufferLineModified = { fg = colors.orange, bg = colors.black },
-  BufferLineModifiedVisible = { fg = colors.orange, bg = colors.black },
-  BufferLineModifiedSelected = { fg = colors.orange, bg = colors.one_bg },
+  BufferLineModified = { fg = colors.green, bg = colors.black },
+  BufferLineModifiedVisible = { fg = colors.green, bg = colors.black },
+  BufferLineModifiedSelected = { fg = colors.green, bg = colors.one_bg },
 
   BufferLineCloseButton = { fg = colors.light_grey, bg = colors.black },
   BufferLineCloseButtonVisible = { fg = colors.light_grey, bg = colors.black },
