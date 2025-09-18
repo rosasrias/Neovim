@@ -26,5 +26,6 @@ require("lazy").setup({
 
 require "core.mappings"
 require "core.autocommands"
+require "ui"
 require("themes").load_all_highlights()
 require("colorify").run()
