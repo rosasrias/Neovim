@@ -1,8 +1,9 @@
 local M = {}
 
 M.ui = {
-  theme = 'catppuccin',
+  theme = 'onedarkpro',
   transparency = false,
+  statusStyle = 'blocks',
 }
 
 return M

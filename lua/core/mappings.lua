@@ -11,3 +11,8 @@ map("n", "<A-k>", ":m .-2<CR>==", { desc = "[M]ove line [U]p" })
 map("v", "J", ":m '>+1<CR>gv=gv", { desc = "[M]ove selection [D]own" })
 map("v", "K", ":m '<-2<CR>gv=gv", { desc = "[M]ove selection [U]p" })
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
+
+-- Statusline
+map("n", "<leader>us", function()
+  require("ui/stl/pickstl").select_status_style()
+end, { desc = "Change Statusline Style" })

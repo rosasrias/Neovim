@@ -35,7 +35,7 @@ o.numberwidth = 1
 o.ruler = true
 
 -- disable nvim intro
-opt.shortmess:append("sI")
+opt.shortmess:append "sI"
 
 o.signcolumn = "yes"
 o.splitbelow = true
@@ -50,7 +50,7 @@ o.updatetime = 200
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
-opt.whichwrap:append("<>[]hl")
+opt.whichwrap:append "<>[]hl"
 
 -- disable some default providers
 g["loaded_node_provider"] = 0
@@ -63,20 +63,21 @@ local cfg = require("core.cfg").ui
 g.toggle_cmp = true
 g.code_action_menu_window_border = "single"
 g.nvimTheme = cfg.theme
-g.themeCache = vim.fn.stdpath("data") .. "/colors_data/"
+g.themeCache = vim.fn.stdpath "data" .. "/colors_data/"
 g.transparency = cfg.transparency
+g.statusStyle = cfg.statusstyle
 
 if vim.loop.os_uname().sysname == "Windows_NT" then
-	g.clipboard = {
-		name = "WindowsClipboard",
-		copy = {
-			["+"] = "clip.exe",
-			["*"] = "clip.exe",
-		},
-		paste = {
-			["+"] = "powershell.exe -NoProfile -Command Get-Clipboard",
-			["*"] = "powershell.exe -NoProfile -Command Get-Clipboard",
-		},
-		cache_enabled = 0,
-	}
+  g.clipboard = {
+    name = "WindowsClipboard",
+    copy = {
+      ["+"] = "clip.exe",
+      ["*"] = "clip.exe",
+    },
+    paste = {
+      ["+"] = "powershell.exe -NoProfile -Command Get-Clipboard",
+      ["*"] = "powershell.exe -NoProfile -Command Get-Clipboard",
+    },
+    cache_enabled = 0,
+  }
 end
