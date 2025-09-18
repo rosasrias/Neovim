@@ -1,31 +1,29 @@
 local colors = require("themes").get_theme_tb "base_30"
-local blend = require("themes.colors").blend
+local utils = require "themes.colors"
 
 return {
-  BufferLineFill = { bg = colors.black },
-  BufferLineBackground = { fg = colors.grey, bg = colors.black },
+  BufflineBufOnActive = { fg = colors.blue, bg = utils.blend(colors.nord_blue, colors.black, 0.10) },
+  BufflineBufOnInactive = {
+    fg = utils.blend(colors.white, colors.black, 0.30),
+    bg = colors.black,
+  },
+  BufflineBufOnModified = { fg = colors.blue, bg = utils.blend(colors.blue, colors.black, 0.10) },
+  BuffLineBufOffModified = { fg = colors.blue, bg = utils.blend(colors.blue, colors.black, 0.10) },
+  BufflineBufOnClose = { fg = colors.red, bg = utils.blend(colors.red, colors.black, 0.10) },
+  BuffLineBufOffClose = {
+    fg = colors.red,
+    bg = utils.blend(colors.red, colors.black, 0.10),
+  },
 
-  BufferLineBufferVisible = { fg = colors.grey_fg, bg = colors.black },
-  BufferLineBufferSelected = { fg = colors.blue, bg = colors.one_bg, bold = true },
-
-  BufferLineSeparator = { fg = colors.black, bg = colors.black },
-  BufferLineOffsetSeparator = { fg = colors.darker_black, bg = colors.darker_black },
-  BufferLineSeparatorSelected = { fg = colors.black, bg = colors.black },
-  BufferLineSeparatorVisible = { fg = colors.black, bg = colors.black },
-
-  BufferLineIndicatorSelected = { fg = colors.blue, bg = colors.one_bg },
-  BufferLineModified = { fg = colors.green, bg = colors.black },
-  BufferLineModifiedVisible = { fg = colors.green, bg = colors.black },
-  BufferLineModifiedSelected = { fg = colors.green, bg = colors.one_bg },
-
-  BufferLineCloseButton = { fg = colors.light_grey, bg = colors.black },
-  BufferLineCloseButtonVisible = { fg = colors.light_grey, bg = colors.black },
-  BufferLineCloseButtonSelected = { fg = colors.red, bg = colors.one_bg },
-
-  -- tus custom
-  BufferlineRun = { fg = colors.teal, bg = blend(colors.teal, colors.black, 0.15) },
-  BufferlineSplit = { fg = colors.green, bg = blend(colors.green, colors.black, 0.15) },
-  BufferlineTheme = { fg = colors.yellow, bg = blend(colors.yellow, colors.black, 0.15) },
-  BufferlineTransparency = { fg = colors.blue, bg = blend(colors.blue, colors.black, 0.15) },
-  BufferlineCloseAll = { fg = colors.red, bg = blend(colors.red, colors.black, 0.15) },
+  BufflineArrow = { fg = colors.blue },
+  BuffLineTree = { bg = colors.darker_black },
+  BuffLineEmpty = { bg = colors.black },
+  BuffLineEmptyColor = { bg = colors.black },
+  BuffLineButton = { bg = utils.blend(colors.sun, colors.black, 0.10), fg = colors.sun },
+  BuffLineCloseButton = { bg = colors.red, fg = colors.black },
+  BuffLineRun = { bg = utils.blend(colors.green, colors.black, 0.10), fg = colors.green },
+  BuffLineSplit = { bg = utils.blend(colors.blue, colors.black, 0.10), fg = colors.blue },
+  BufflineTrans = { bg = utils.blend(colors.purple, colors.black, 0.10), fg = colors.purple },
+  NoBg = { bg = colors.black, fg = "NONE" },
+  BufflineButtonScroll = { bg = colors.black, fg = colors.blue },
 }
