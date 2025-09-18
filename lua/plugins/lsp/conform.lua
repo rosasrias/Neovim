@@ -25,6 +25,7 @@ return {
       json = { "prettier" },
       yaml = { "yamlfix" },
       markdown = { "mdformat" },
+      xml = { "xmlformatter" },
       python = { "black" },
       rust = { "rustfmt" },
       proto = { "prettier" },
