@@ -1,9 +1,9 @@
 local M = {}
 
 M.ui = {
-  theme = 'onedarkpro',
-  transparency = false,
-  statusStyle = 'blocks',
+  theme = 'cosmicdecay',
+  transparency = true,
+  statusStyle = 'fancy',
 }
 
 return M

@@ -40,9 +40,9 @@ local M = function(m)
     end
   else
     if m == "minimal" or m == "blocks" then
-      return "%#StalineFilename#  Gentleman "
+      return "%#StalineFilename#  Windows "
     elseif m == "fancy" then
-      return "%#StalineFilenameFancy#" .. "  Archcraft  " .. "%#StalineFilenameSep#" .. " %#StalineEmptySpace#"
+      return "%#StalineFilenameFancy#" .. "  Windows  " .. "%#StalineFilenameSep#" .. " %#StalineEmptySpace#"
     end
   end
 end

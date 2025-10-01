@@ -4,7 +4,6 @@ return {
   event = { "BufReadPost", "BufNewFile" },
   cmd = { "LspInfo", "LspInstall", "LspUninstall", "LspStart" },
   config = function()
-    local lspconfig = require "lspconfig"
     local map = vim.keymap.set
 
     local M = {}
@@ -116,7 +115,6 @@ return {
       "html",
       "pyright",
       "vtsls",
-      "clangd",
       "cssls",
       "texlab",
       "jsonls",
@@ -127,17 +125,22 @@ return {
       "taplo",
       "csharp_ls",
       "taplo",
+      "clangd",
     }
 
-    for _, k in ipairs(servers) do
-      lspconfig[k].setup {
+    for _, server in ipairs(servers) do
+      -- Configurar el servidor
+      vim.lsp.config(server, {
         on_attach = M.on_attach,
         on_init = M.on_init,
         capabilities = M.capabilities,
-      }
+      })
+
+      -- Habilitar el servidor
+      vim.lsp.enable(server)
     end
 
-    lspconfig.lua_ls.setup {
+    vim.lsp.config("lua_ls", {
       on_attach = M.on_attach,
       on_init = M.on_init,
       capabilities = M.capabilities,
@@ -152,9 +155,10 @@ return {
           },
         },
       },
-    }
+    })
+    vim.lsp.enable "lua_ls"
 
-    lspconfig.emmet_ls.setup {
+    vim.lsp.config("emmet_ls", {
       on_attach = function(client, bufnr)
         M.on_attach(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
@@ -186,15 +190,17 @@ return {
           },
         },
       },
-    }
+    })
+    vim.lsp.enable "emmet_ls"
 
-    lspconfig.intelephense.setup {
+    vim.lsp.config("intelephense", {
       on_attach = M.on_attach,
       capabilities = M.capabilities,
       cmd = { "intelephense", "--stdio" },
-      root_dir = lspconfig.util.root_pattern("composer.json", ".git", "index.php", "public"),
+      root_dir = vim.fs.dirname(vim.fs.find({ "composer.json", ".git", "index.php", "public" }, { upward = true })[1]),
       filetypes = { "php" },
-    }
+    })
+    vim.lsp.enable "intelephense"
 
     -- lspconfig.omnisharp.setup({
     -- 	on_init = M.on_init,

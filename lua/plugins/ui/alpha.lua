@@ -119,7 +119,7 @@ return {
     }
 
     -- Set the header
-    dashboard.section.header.val = vim.split(logos.TEXT, "\n")
+    dashboard.section.header.val = vim.split(logos.ANYA, "\n")
     dashboard.section.header.opts.hl = "AlphaHeader"
 
     -- Define buttons
