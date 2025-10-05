@@ -44,7 +44,7 @@ return {
         -- "yamlls",
       },
       automatic_installation = true,
-      automatic_enable = true,
+      -- automatic_enable = true,
     }
   end,
 }

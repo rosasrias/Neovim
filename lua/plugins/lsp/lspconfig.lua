@@ -114,7 +114,7 @@ return {
       "jdtls",
       "html",
       "pyright",
-      "vtsls",
+      "ts_ls",
       "cssls",
       "texlab",
       "jsonls",
@@ -125,7 +125,6 @@ return {
       "taplo",
       "csharp_ls",
       "taplo",
-      "clangd",
     }
 
     for _, server in ipairs(servers) do
@@ -139,6 +138,22 @@ return {
       -- Habilitar el servidor
       vim.lsp.enable(server)
     end
+
+    vim.lsp.config("clangd", {
+      on_attach = M.on_attach,
+      on_init = M.on_init,
+      capabilities = M.capabilities,
+      cmd = {
+        "clangd",
+        "--header-insertion=never",
+        "--query-driver=C:/ProgramData/chocolatey/lib/winlibs/tools/mingw64/bin/*",
+        "--background-index", -- indexado en segundo plano (más rápido con proyectos grandes)
+        "--clang-tidy", -- integra clang-tidy si lo tienes
+        "--completion-style=detailed",
+        "--cross-file-rename",
+      },
+    })
+    vim.lsp.enable "clangd"
 
     vim.lsp.config("lua_ls", {
       on_attach = M.on_attach,

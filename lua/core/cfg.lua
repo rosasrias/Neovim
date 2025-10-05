@@ -2,7 +2,7 @@ local M = {}
 
 M.ui = {
   theme = 'cosmicdecay',
-  transparency = true,
+  transparency = false,
   statusStyle = 'fancy',
 }
 
