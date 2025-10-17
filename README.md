@@ -1,4 +1,4 @@
-# 🧠 Neovim Config - by rosasrias
+# 🧠 Neovim Config
 
 > Una configuración personalizada de Neovim pensada para devs que quieren un entorno rápido, modular y potente sin perder elegancia. Minimalismo funcional, pero con toda la artillería lista para codear a gusto.
 
