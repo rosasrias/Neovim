@@ -6,12 +6,28 @@
 
 ## 🚀 Instalación
 
+### Linux 
+
 ```bash
 # Cloná el repo en tu configuración de Neovim
 mv ~/.config/nvim ~/.config/nvim_backup   # (opcional, por si querés guardar la anterior)
 git clone https://github.com/rosasrias/Neovim ~/.config/nvim
 
 # Entrá a Neovim y dejá que se instalen los plugins
+nvim
+```
+
+### Windows
+
+```bash 
+
+# (Opcional) Hacé un respaldo de tu configuración actual
+Rename-Item $env:LOCALAPPDATA\nvim "$env:LOCALAPPDATA\nvim_backup"
+
+# Cloná el repositorio con mi configuración
+git clone https://github.com/rosasrias/Neovim $env:LOCALAPPDATA\nvim
+
+# Iniciá Neovim para instalar los plugins
 nvim
 ```
 
