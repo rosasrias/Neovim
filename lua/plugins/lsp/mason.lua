@@ -37,7 +37,7 @@ return {
         "emmet_ls",
         "pyright",
         "clangd",
-        "omnisharp",
+        -- "omnisharp",
         -- extras opcionales:
         -- "bashls",
         -- "jsonls",
