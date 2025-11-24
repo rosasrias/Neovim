@@ -1,128 +1,111 @@
-local status_ok, jdtls = pcall(require, "jdtls")
-if not status_ok then
-	return
-end
-
-local bufnr = vim.api.nvim_get_current_buf()
-
-local java_debug_path = vim.fn.stdpath("data") .. "/mason/packages/java-debug-adapter/"
-local java_test_path = vim.fn.stdpath("data") .. "/mason/packages/java-test"
-local jdtls_path = vim.fn.stdpath("data") .. "/mason/packages/jdtls"
-local lombok_path = vim.fn.stdpath("data") .. "/mason/packages/lombok-nightly"
-
-local bundles = {
-	vim.fn.glob(java_debug_path .. "extensions/server/com.microsoft.java.debug.plugin-*.jar", true),
-}
-vim.list_extend(bundles, vim.split(vim.fn.glob(java_test_path .. "extension/server/*.jar", true), "\n"))
-
--- NOTE: Decrease the amount of files to improve speed(Experimental).
--- INFO: It's annoying to edit the version again and again.
-
-local equinox_path = vim.split(vim.fn.glob(vim.fn.stdpath("data") .. "/mason/packages/jdtls/plugins/*jar"), "\n")
-local equinox_launcher = ""
-
-for _, file in pairs(equinox_path) do
-	if file:match("launcher_") then
-		equinox_launcher = file
-		break
-	end
-end
-
-WORKSPACE_PATH = vim.fn.stdpath("data") .. "/workspace"
-if vim.g.os == "Darwin" then
-	OS_NAME = "mac"
-elseif vim.g.os == "Linux" then
-	OS_NAME = "linux"
-elseif vim.g.os == "windows" then
-	OS_NAME = "win"
-else
-	vim.notify("Unsupported OS", vim.log.levels.WARN, { title = "jdtls" })
+local ok, jdtls = pcall(require, "jdtls")
+if not ok then
+  return
 end
 
 local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
-local workspace_dir = WORKSPACE_PATH .. project_name
+local root_dir = require("jdtls.setup").find_root(root_markers)
+if root_dir == nil then
+  return
+end
 
-local config = {
-	cmd = {
-		"java", -- or '/path/to/java17_or_newer/bin/java'
-		-- depends on if 'java' is in your $PATH env variable and if it point to the right version.
+local jdtls_path = vim.fn.stdpath "data" .. "/mason/packages/jdtls"
+local java_debug_path = vim.fn.stdpath "data" .. "/mason/packages/java-debug-adapter"
+local java_test_path = vim.fn.stdpath "data" .. "/mason/packages/java-test"
+local lombok_path = jdtls_path .. "/lombok.jar"
 
-		"-Declipse.application=org,eclipse.jdtl.ls.core.id1",
-		"-Dosgi.bundles.defaultStartLevel=4",
-		"-Declipse.product=org.eclipse.jdt.ls.core.product",
-		"-Dlog.protocol=true",
-		"-Dlog.level=ALL",
-		"-javaagent:" .. lombok_path .. "lombok.jar",
-		"-Xms1g",
-		"--add-modules=ALL-SYSTEM",
-		"--add-opens",
-		"java.base/java.util=ALL-UNNAMED",
-		"--add-opens",
-		"java.base/java.lang=ALL-UNNAMED",
-		"-jar",
-		equinox_launcher,
-		-- Must point to the ecplipse.jdt.ls installation change to one 'linux' 'mac' 'win'
-		"-configuration",
-		jdtls_path .. "config_" .. "win",
-		"-data",
-		workspace_dir,
-	},
-	on_attach = require("plugins.lsp.lspconfig").on_attach,
-	capabilities = require("plugins.lsp.lspconfig").capabilities,
-	root_dir = require("jdtls.setup").find_root(root_markers),
-	init_options = {
-		bundles = bundles,
-	},
-	settings = {
-		eclipse = {
-			downloadSources = true,
-		},
-		maven = {
-			downloadSources = true,
-		},
-		implementationsCodeLens = {
-			enabled = true,
-		},
-		referencesCodeLens = {
-			enabled = true,
-		},
-		references = {
-			includeDecompiledSources = true,
-		},
+local equinox_launcher = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")
 
-		signatureHelp = { enabled = true },
-		extendedClientCapabilities = require("jdtls").extendedClientCapabilities,
-		sources = {
-			organizeImports = {
-				starThreshold = 9999,
-				staticStarThreshold = 9999,
-			},
-		},
-	},
-	flags = {
-		allow_incremental_sync = true,
-	},
+-- Bundles debug + test
+local bundles = {
+  vim.fn.glob(java_debug_path .. "/extensions/server/com.microsoft.java.debug.plugin-*.jar"),
 }
 
-local keymap = vim.keymap.set
+vim.list_extend(bundles, vim.split(vim.fn.glob(java_test_path .. "/extension/server/*.jar"), "\n"))
 
-keymap("n", "A-o", ":lua require'jdtls'.organize_imports()<cr>", { silent = true, buffer = bufnr })
-keymap("n", "crv", ":lua require'jdtls'.extract_variable()<cr>", { silent = true, buffer = bufnr })
-keymap("v", "crv", "<Esc>:lua require'jdtls'.extract_variable(true)<cr>", { silent = true, buffer = bufnr })
-keymap("n", "crc", ":lua require'jdtls'.extract_constant()<cr>", { silent = true, buffer = bufnr })
-keymap("v", "crc", "<Esc>:lua require'jdtls'.extract_constant(true)<cr>", { silent = true, buffer = bufnr })
-keymap("v", "crm", "<Esc>:lua require'jdtls'.extract_method(true)<cr>", { silent = true, buffer = bufnr })
+-- Workspace
+local workspace_dir = vim.fn.stdpath "data" .. "/jdtls-workspace/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
 
-vim.cmd([[
-    command! -buffer -nargs=? -complete=custom,v:lua.require'jdtls'._complete_compile JdtCompile lua require('jdtls').compile(<f-args>)
-    command! -buffer -nargs=? -complete=custom,v:lua.require'jdtls'._complete_set_runtime JdtSetRuntime lua require('jdtls').set_runtime(<f-args>)
-    command! -buffer JdtUpdateConfig lua require('jdtls').update_project_config()
-    command! -buffer JdtJol lua require('jdtls').jol()
-    command! -buffer JdtBytecode lua require('jdtls').javap()
-    command! -buffer JdtJshell lua require('jdtls').jshell()
-    command! -buffer JavaTestCurrentClass lua require('jdtls').test_class()
-    command! -buffer JavaTestNearestMethod lua require('jdtls').test_nearest_method()
-]])
+local config = {
+  cmd = {
+    "java",
+    "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+    "-Dosgi.bundles.defaultStartLevel=4",
+    "-Declipse.product=org.eclipse.jdt.ls.core.product",
+    "-Dlog.protocol=true",
+    "-Dlog.level=ALL",
+    "-javaagent:" .. lombok_path,
+    "-Xms1g",
+    "--add-modules=ALL-SYSTEM",
+    "--add-opens",
+    "java.base/java.util=ALL-UNNAMED",
+    "--add-opens",
+    "java.base/java.lang=ALL-UNNAMED",
+    "-jar",
+    equinox_launcher,
+
+    "-configuration",
+    jdtls_path .. "/config_win",
+
+    "-data",
+    workspace_dir,
+  },
+
+  root_dir = root_dir,
+  on_attach = require("plugins.lsp.lspconfig").on_attach,
+  capabilities = require("plugins.lsp.lspconfig").capabilities,
+
+  settings = {
+    java = {
+      eclipse = { downloadSources = true },
+      maven = { downloadSources = true },
+      referenceCodeLens = { enabled = true },
+      implementationsCodeLens = { enabled = true },
+      signatureHelp = { enabled = true },
+
+      sources = {
+        organizeImports = {
+          starThreshold = 9999,
+          staticStarThreshold = 9999,
+        },
+      },
+    },
+  },
+
+  init_options = {
+    bundles = bundles,
+  },
+}
+
+-- Keymaps
+local buf = vim.api.nvim_get_current_buf()
+local map = vim.keymap.set
+local opts = { silent = true, buffer = buf }
+
+map("n", "A-o", function()
+  jdtls.organize_imports()
+end, opts)
+map("n", "crv", function()
+  jdtls.extract_variable()
+end, opts)
+map("v", "crv", function()
+  jdtls.extract_variable(true)
+end, opts)
+map("n", "crc", function()
+  jdtls.extract_constant()
+end, opts)
+map("v", "crc", function()
+  jdtls.extract_constant(true)
+end, opts)
+map("v", "crm", function()
+  jdtls.extract_method(true)
+end, opts)
+
+vim.cmd [[
+	command! -buffer JdtUpdateConfig lua require('jdtls').update_project_config()
+	command! -buffer JdtBytecode lua require('jdtls').javap()
+	command! -buffer JavaTestCurrentClass lua require('jdtls').test_class()
+	command! -buffer JavaTestNearestMethod lua require('jdtls').test_nearest_method()
+]]
 
 jdtls.start_or_attach(config)
