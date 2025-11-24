@@ -16,6 +16,8 @@ return {
   },
   opts = {
     ensure_installed = {
+      "scheme",
+      "xml",
       "python",
       "luadoc",
       "javascript",
