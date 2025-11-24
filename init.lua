@@ -29,3 +29,9 @@ require "core.autocommands"
 require "ui"
 require("themes").load_all_highlights()
 require("colorify").run()
+
+vim.filetype.add {
+  extension = {
+    xaml = "xml",
+  },
+}
