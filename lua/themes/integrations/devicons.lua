@@ -2,7 +2,7 @@ local colors = require("themes").get_theme_tb "base_30"
 
 return {
   DevIconc = { fg = colors.blue },
-  DevIconcss = { fg = colors.purple },
+  DevIconcss = { fg = colors.blue },
   DevIconTypescript = { fg = colors.teal },
   DevIcondeb = { fg = colors.cyan },
   DevIconDockerfile = { fg = colors.cyan },
@@ -35,4 +35,14 @@ return {
   DevIconSvelte = { fg = colors.red },
   DevIconJava = { fg = colors.orange },
   DevIconDart = { fg = colors.cyan },
+  DevIconCsharp = { fg = colors.vibrant_green },
+  DevIconCsproj = { fg = colors.purple },
+  DevIconPs1 = { fg = colors.blue },
+  DevIconMaven = { fg = colors.sun },
+  DevIconPackageJson = { fg = colors.yellow },
+  DevIconPackageLockJson = { fg = colors.red },
+  DevIconXml = { fg = colors.red },
+  DevIconSQL = { fg = colors.nord_blue },
+  DevIconPy = { fg = colors.vibrant_green },
+  DevIconReadme = { fg = colors.cyan },
 }

@@ -1,4 +1,4 @@
-local theme = require("themes").get_theme_tb("base_16")
+local theme = require("themes").get_theme_tb "base_16"
 
 return {
   ["@lsp.type.class"] = { link = "Structure" },

@@ -1,4 +1,4 @@
-local colors = require("themes").get_theme_tb("base_30")
+local colors = require("themes").get_theme_tb "base_30"
 local colorize = require("themes.colors").change_hex_lightness
 
 return {
@@ -12,6 +12,9 @@ return {
   DiagnosticError = { fg = colors.red },
   DiagnosticWarn = { fg = colors.yellow },
   DiagnosticInfo = { fg = colors.green },
+  DiagnosticPrefix = { fg = colors.yellow, bold = true },
+  DiagnosticHeader = { fg = colors.cyan, bold = true },
+
   LspSignatureActiveParameter = { fg = colors.black, bg = colors.green },
 
   LspInlayHint = {
