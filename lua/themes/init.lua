@@ -229,7 +229,7 @@ M.load_all_highlights = function()
   --   require("ibl").update()
   -- end)
 
-  vim.api.nvim_exec_autocmds("User", { pattern = "ThemeReload" })
+  vim.api.nvim_exec_autocmds("User", { pattern = "ReloadTheme" })
 end
 
 M.override_theme = function(default_theme, theme_name)
