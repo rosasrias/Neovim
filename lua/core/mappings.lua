@@ -16,3 +16,6 @@ map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 map("n", "<leader>us", function()
   require("ui/stl/pickstl").select_status_style()
 end, { desc = "Change Statusline Style" })
+
+-- Terminal
+map("n", "<leader>th", "<cmd>Terminal<cr>", { desc = "[T]erminal [H]orizontal" })
