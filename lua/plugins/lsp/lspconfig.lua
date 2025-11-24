@@ -111,7 +111,6 @@ return {
     vim.lsp.util.open_floating_preview = custom_open_floating_preview
 
     local servers = {
-      "jdtls",
       "html",
       "pyright",
       "ts_ls",
@@ -125,6 +124,7 @@ return {
       "taplo",
       "csharp_ls",
       "taplo",
+      "lemminx",
     }
 
     for _, server in ipairs(servers) do
