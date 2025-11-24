@@ -16,11 +16,11 @@ return {
       lua = { "stylua" },
       css = { "prettierd" },
       html = { "prettierd" },
-      javascript = { "prettierd" },
+      javascript = { "biome" },
       javascriptreact = { "prettierd" },
       typescript = { "prettierd" },
       typescriptreact = { "prettierd" },
-      json = { "prettierd" },
+      json = { "biome" },
       yaml = { "yamlfix" },
       markdown = { "mdformat" },
       c_sharp = { "csharpier" },
@@ -34,6 +34,7 @@ return {
       c = { "clang-format" },
       php = { "php-cs-fixer" },
       toml = { "taplo" },
+      ps1 = { "prettier" },
     },
 
     format_on_save = {
