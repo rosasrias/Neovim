@@ -2,12 +2,19 @@ local opt = vim.opt
 local o = vim.o
 local g = vim.g
 
+opt.fileformats = { "unix", "dos" }
+o.shell = "pwsh"
+o.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
+o.shellquote = ""
+o.shellxquote = ""
 o.laststatus = 3
 o.showmode = false
 o.splitkeep = "screen"
 o.wrap = false
 o.encoding = "utf-8"
 o.fileencoding = "utf-8"
+o.fileformat = "unix"
+opt.fileformats = { "unix", "dos" }
 o.swapfile = false
 o.backup = false
 o.writebackup = false
@@ -69,14 +76,14 @@ g.statusStyle = cfg.statusstyle
 
 if vim.loop.os_uname().sysname == "Windows_NT" then
   g.clipboard = {
-    name = "WindowsClipboard",
+    name = "win32yank",
     copy = {
-      ["+"] = "clip.exe",
-      ["*"] = "clip.exe",
+      ["+"] = "win32yank.exe -i --crlf",
+      ["*"] = "win32yank.exe -i --crlf",
     },
     paste = {
-      ["+"] = "powershell.exe -NoProfile -Command Get-Clipboard",
-      ["*"] = "powershell.exe -NoProfile -Command Get-Clipboard",
+      ["+"] = "win32yank.exe -o --lf",
+      ["*"] = "win32yank.exe -o --lf",
     },
     cache_enabled = 0,
   }
