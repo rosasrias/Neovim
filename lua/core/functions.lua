@@ -4,7 +4,6 @@
 local ICONS = {
   RUN = " ",
   BUILD = "󱤵 ",
-  JAVA = " ",
 }
 
 ---------------------------------------------------------
@@ -58,7 +57,7 @@ local function open_floating_terminal(cmd)
     nvimtree_width = view.View.width
   end
 
-  local width = vim.o.columns - nvimtree_width
+  local width = vim.o.columns - nvimtree_width - 3
   local bottom_padding = 3
 
   local config = {
@@ -203,14 +202,14 @@ local function build_run()
     -- JAVA + MAVEN + SPRING BOOT
     ---------------------------------------------------------
     java = {
-      [ICONS.RUN .. ICONS.JAVA .. " Maven auto-run"] = function()
+      [ICONS.RUN .. " Maven auto-run"] = function()
         maven_detected_run()
       end,
-      [ICONS.BUILD .. ICONS.JAVA .. " Maven build"] = "mvn -q clean package",
-      [ICONS.RUN .. ICONS.JAVA .. " Spring Boot run"] = "mvn spring-boot:run",
-      [ICONS.BUILD .. ICONS.JAVA .. " Spring Boot build"] = "mvn -q clean install",
-      [ICONS.RUN .. ICONS.JAVA .. " Java run"] = "java $fileBase",
-      [ICONS.RUN .. ICONS.JAVA .. " Java compile & run"] = "javac % && java $fileBase",
+      [ICONS.BUILD .. " Maven build"] = "mvn -q clean package",
+      [ICONS.RUN .. " Spring Boot run"] = "mvn spring-boot:run",
+      [ICONS.BUILD .. " Spring Boot build"] = "mvn -q clean install",
+      [ICONS.RUN .. " Java run"] = "java $fileBase",
+      [ICONS.RUN .. " Java compile & run"] = "javac % && java $fileBase",
     },
 
     ---------------------------------------------------------
