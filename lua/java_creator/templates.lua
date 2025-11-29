@@ -84,6 +84,116 @@ public class %s extends Exception {
   )
 end
 
+-- SPRING BOOT TEMPLATES
+M.generators["Entity"] = function(name, opts)
+  local use_lombok = opts and opts.use_lombok or false
+  local annotations = ""
+
+  if use_lombok then
+    annotations = '@Data\n@Entity\n@Table(name = "' .. name:lower() .. '")'
+  else
+    annotations = '@Entity\n@Table(name = "' .. name:lower() .. '")'
+  end
+
+  return string.format(
+    [[
+%s
+public class %s {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    // agregar más campos aquí
+}
+]],
+    annotations,
+    name
+  )
+end
+
+M.generators["SpringController"] = function(name, _opts)
+  return string.format(
+    [[
+@RestController
+@RequestMapping("/api/%s")
+public class %sController {
+    
+    @GetMapping
+    public List<%s> findAll() {
+        return List.of();
+    }
+    
+    @GetMapping("/{id}")
+    public %s findById(@PathVariable Long id) {
+        return null;
+    }
+    
+    @PostMapping
+    public %s create(@RequestBody %s %s) {
+        return null;
+    }
+}
+]],
+    name:lower(),
+    name,
+    name,
+    name,
+    name,
+    name,
+    name:lower()
+  )
+end
+
+M.generators["SpringService"] = function(name, _opts)
+  return string.format(
+    [[
+@Service
+@Transactional
+public class %sService {
+    
+    private final %sRepository %sRepository;
+    
+    public %sService(%sRepository %sRepository) {
+        this.%sRepository = %sRepository;
+    }
+}
+]],
+    name,
+    name,
+    name:lower(),
+    name,
+    name,
+    name:lower(),
+    name:lower(),
+    name:lower()
+  )
+end
+
+M.generators["SpringRepository"] = function(name, _opts)
+  return string.format(
+    [[
+@Repository
+public interface %sRepository extends JpaRepository<%s, Long> {
+    
+}
+]],
+    name,
+    name
+  )
+end
+
+M.generators["SpringComponent"] = function(name, _opts)
+  return string.format(
+    [[
+@Component
+public class %s {
+    // component code
+}
+]],
+    name
+  )
+end
+
 -- helper to produce final content with package line
 function M.build(kind, pkg, name, opts)
   local generator = M.generators[kind]

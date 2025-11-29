@@ -3,97 +3,8 @@ local logic = require "java_creator.logic"
 local M = {}
 
 function M.setup()
-  -- Configurar vim.ui.select para usar Telescope
-  require("telescope").setup {
-    extensions = {
-      ["ui-select"] = {
-        require("telescope.themes").get_dropdown {
-          layout_config = {
-            height = 50,
-            width = 50,
-          },
-        },
-      },
-    },
-  }
-
-  -- Cargar la extensión ui-select
-  require("telescope").load_extension "ui-select"
-
-  -- Configurar vim.ui.select para usar Telescope como handler por defecto
-  local function handle_ui_select(items, opts, on_choice)
-    local themes = require "telescope.themes"
-    local dropdown = themes.get_dropdown {
-      layout_config = {
-        height = 30,
-        width = 30,
-      },
-      prompt_title = opts.prompt or "Select",
-    }
-
-    local pickers = require "telescope.pickers"
-    local finders = require "telescope.finders"
-    local conf = require("telescope.config").values
-    local actions = require "telescope.actions"
-    local action_state = require "telescope.actions.state"
-
-    pickers
-      .new(dropdown, {
-        prompt_title = opts.prompt or "Select",
-        finder = finders.new_table {
-          results = items,
-          entry_maker = function(entry)
-            return {
-              value = entry,
-              display = entry,
-              ordinal = entry,
-            }
-          end,
-        },
-        sorter = conf.generic_sorter(dropdown),
-        attach_mappings = function(prompt_bufnr, map)
-          map("i", "<CR>", function()
-            local selection = action_state.get_selected_entry()
-            actions.close(prompt_bufnr)
-            if selection then
-              on_choice(selection.value)
-            else
-              on_choice(nil)
-            end
-          end)
-
-          map("i", "<Esc>", function()
-            actions.close(prompt_bufnr)
-            on_choice(nil)
-          end)
-
-          map("n", "<CR>", function()
-            local selection = action_state.get_selected_entry()
-            actions.close(prompt_bufnr)
-            if selection then
-              on_choice(selection.value)
-            else
-              on_choice(nil)
-            end
-          end)
-
-          map("n", "q", function()
-            actions.close(prompt_bufnr)
-            on_choice(nil)
-          end)
-
-          return true
-        end,
-      })
-      :find()
-  end
-
-  -- Establecer como handler por defecto
-  vim.ui.select = handle_ui_select
-
   return {
     java_creator = function()
-      -- ... el resto de tu código existente para el picker principal ...
       local pickers = require "telescope.pickers"
       local finders = require "telescope.finders"
       local conf = require("telescope.config").values
@@ -107,6 +18,11 @@ function M.setup()
         { name = "Record", icon = "󰜫", desc = "Crear record" },
         { name = "Abstract", icon = "󰙱", desc = "Crear abstract class" },
         { name = "Exception", icon = "", desc = "Crear exception" },
+        { name = "Entity", icon = "󰎁", desc = "Crear entidad JPA" },
+        { name = "SpringController", icon = "󰮠", desc = "Crear Controller Spring" },
+        { name = "SpringService", icon = "󰚥", desc = "Crear Service Spring" },
+        { name = "SpringRepository", icon = "󰨸", desc = "Crear Repository Spring" },
+        { name = "SpringComponent", icon = "󰡌", desc = "Crear Component Spring" },
         { name = "Create Package", icon = "󰉓", desc = "Crear paquete" },
       }
 

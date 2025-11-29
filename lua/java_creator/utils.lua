@@ -16,10 +16,24 @@ function M.find_java_root(start_dir)
   end
 
   while dir ~= "" and dir ~= "/" do
-    local candidate = dir .. "/src/main/java"
-    if vim.fn.isdirectory(candidate) == 1 then
-      return candidate
+    -- Para Maven
+    local maven_candidate = dir .. "/src/main/java"
+    if vim.fn.isdirectory(maven_candidate) == 1 then
+      return maven_candidate
     end
+
+    -- Para Gradle
+    local gradle_candidate = dir .. "/app/src/main/java"
+    if vim.fn.isdirectory(gradle_candidate) == 1 then
+      return gradle_candidate
+    end
+
+    -- Estructura alternativa
+    local alt_candidate = dir .. "/src/java"
+    if vim.fn.isdirectory(alt_candidate) == 1 then
+      return alt_candidate
+    end
+
     dir = M.normalize(vim.fn.fnamemodify(dir, ":h"))
   end
 
@@ -55,6 +69,22 @@ function M.try_format()
     end
   end)
   return ok
+end
+
+function M.detect_framework()
+  local cwd = vim.fn.getcwd()
+
+  -- Detectar Spring Boot
+  if vim.fn.filereadable(cwd .. "/pom.xml") == 1 or vim.fn.filereadable(cwd .. "/build.gradle") == 1 then
+    return "spring"
+  end
+
+  -- Detectar Quarkus
+  if vim.fn.filereadable(cwd .. "/src/main/resources/application.properties") == 1 then
+    return "spring" -- o quarkus
+  end
+
+  return "plain"
 end
 
 return M

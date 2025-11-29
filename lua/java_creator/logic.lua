@@ -3,6 +3,16 @@ local templates = require "java_creator.templates"
 
 local M = {}
 
+local config = {
+  spring_annotations = {
+    Controller = "@RestController",
+    Service = "@Service",
+    Repository = "@Repository",
+    Component = "@Component",
+  },
+  use_lombok = false,
+}
+
 local icons = {
   Class = " ",
   Interface = "󰠱 ",
@@ -11,6 +21,11 @@ local icons = {
   Abstract = "󰙱 ",
   Exception = " ",
   Package = "󰉓 ",
+  Entity = "󰎁 ",
+  SpringController = "󰮠 ",
+  SpringService = "󰚥 ",
+  SpringRepository = "󰨸 ",
+  SpringComponent = "󰡌 ",
 }
 
 -- split csv helper
@@ -139,6 +154,15 @@ function M.create(kind)
         local opts = { params = split_csv(params) }
         proceed_with_opts(opts)
       end)
+    elseif kind == "Entity" then
+      -- Preguntar si quiere usar Lombok
+      vim.ui.input({
+        prompt = "¿Usar Lombok? (y/N): ",
+        default = "N",
+      }, function(use_lombok)
+        local opts = { use_lombok = use_lombok:lower():find "^y" ~= nil }
+        proceed_with_opts(opts)
+      end)
     else
       proceed_with_opts {}
     end
@@ -185,6 +209,11 @@ function M.create_package()
       vim.notify("󰉓 Paquete creado: " .. target_dir, vim.log.levels.INFO)
     end)
   end)
+end
+
+-- Función para configurar opciones desde fuera
+function M.setup(user_config)
+  config = vim.tbl_deep_extend("force", config, user_config or {})
 end
 
 return M
