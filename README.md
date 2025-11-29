@@ -134,5 +134,5 @@ Inspirado en ideas de [siduck (NvChad)](https://github.com/NvChad/NvChad) y en m
 
 ---
 
-**Hecho con ❤️ y un poco de caffeine.**
+**Hecho con ❤️ y un poco de café.**
 
