@@ -1,15 +1,15 @@
 local telescope = {
-  pickers = require("telescope.pickers"),
-  finders = require("telescope.finders"),
-  actions = require("telescope.actions"),
-  action_state = require("telescope.actions.state"),
+  pickers = require "telescope.pickers",
+  finders = require "telescope.finders",
+  actions = require "telescope.actions",
+  action_state = require "telescope.actions.state",
   config = require("telescope.config").values,
 }
 
 local M = {}
 
 local function update_theme_in_file(theme)
-  local file_path = vim.fn.stdpath("config") .. "/lua/core/cfg.lua"
+  local file_path = vim.fn.stdpath "config" .. "/lua/core/cfg.lua"
   local lines = {}
 
   -- Leer el archivo línea por línea
@@ -17,7 +17,7 @@ local function update_theme_in_file(theme)
   if file then
     for line in file:lines() do
       -- Si encuentra la línea del tema, la reemplaza
-      local updated_line = line:match("theme%s*=") and ("  theme = '" .. theme .. "',") or line
+      local updated_line = line:match "theme%s*=" and ("  theme = '" .. theme .. "',") or line
       table.insert(lines, updated_line)
     end
     file:close()
@@ -41,7 +41,7 @@ function M.is_available(plugin)
 end
 
 local themes = (function()
-  local theme_files = vim.fn.readdir(vim.fn.stdpath("config") .. "/lua/themes/schemes")
+  local theme_files = vim.fn.readdir(vim.fn.stdpath "config" .. "/lua/themes/schemes")
   local theme_names = {}
   for _, file in ipairs(theme_files) do
     table.insert(theme_names, vim.fn.fnamemodify(file, ":r"))
@@ -113,18 +113,18 @@ end
 
 function M.setup()
   telescope.pickers
-      .new({}, {
-        prompt_title = "  Colorschemes",
-        layout_config = { height = 0.50, width = 0.50 },
-        finder = telescope.finders.new_table({ results = themes }),
-        sorter = telescope.config.generic_sorter(),
-        attach_mappings = function(bufnr, map)
-          create_autocmd(bufnr)
-          map_telescope_actions(bufnr, map)
-          return true
-        end,
-      })
-      :find()
+    .new({}, {
+      prompt_title = "  Colorschemes",
+      layout_config = { height = 0.50, width = 0.50 },
+      finder = telescope.finders.new_table { results = themes },
+      sorter = telescope.config.generic_sorter(),
+      attach_mappings = function(bufnr, map)
+        create_autocmd(bufnr)
+        map_telescope_actions(bufnr, map)
+        return true
+      end,
+    })
+    :find()
 end
 
 function M.toggle_transparency()
