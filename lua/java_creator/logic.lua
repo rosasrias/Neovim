@@ -17,15 +17,15 @@ local icons = {
   Class = " ",
   Interface = "󰠱 ",
   Enum = "󰘳 ",
-  Record = "󰜫 ",
-  Abstract = "󰙱 ",
+  Record = "󰑋",
+  Abstract = " ",
   Exception = " ",
-  Package = "󰉓 ",
+  Package = "󰏔 ",
   Entity = "󰎁 ",
-  SpringController = "󰮠 ",
-  SpringService = "󰚥 ",
-  SpringRepository = "󰨸 ",
-  SpringComponent = "󰡌 ",
+  SpringController = " ",
+  SpringService = " ",
+  SpringRepository = " ",
+  SpringComponent = "󰡀 ",
 }
 
 -- split csv helper
@@ -71,11 +71,10 @@ local function ensure_can_write(path, callback)
   end
 end
 
--- Función principal mejorada con callbacks anidados
 function M.create(kind)
   kind = kind or "Class"
 
-  -- Primer input: nombre
+  -- First input: name
   vim.ui.input({
     prompt = (icons[kind] or "") .. " Nombre de la " .. kind .. ": ",
   }, function(name)
@@ -110,14 +109,14 @@ function M.create(kind)
 
       local file_path = utils.normalize(final_dir .. "/" .. name .. ".java")
 
-      -- Verificar si podemos escribir
+      -- Check if we can write
       ensure_can_write(file_path, function(can_write)
         if not can_write then
           vim.notify("No se creó: " .. file_path, vim.log.levels.INFO)
           return
         end
 
-        -- Crear contenido y archivo
+        -- Create content and archive
         local content = templates.build(kind, pkg, name, opts)
         if not content then
           vim.notify("Tipo no soportado: " .. tostring(kind), vim.log.levels.ERROR)
@@ -206,12 +205,39 @@ function M.create_package()
         end
       end
 
-      vim.notify("󰉓 Paquete creado: " .. target_dir, vim.log.levels.INFO)
+      -- Create a class application in the package
+      vim.ui.input({
+        prompt = "¿Crear clase App con método main? (y/N): ",
+        default = "N",
+      }, function(create_app)
+        if create_app:lower():find "^y" then
+          local app_path = utils.normalize(target_dir .. "/App.java")
+          -- Check if it already exists
+          if vim.fn.filereadable(app_path) == 1 then
+            vim.notify("App.java ya existe en el paquete.", vim.log.levels.WARN)
+          else
+            local content = string.format(
+              'package %s;\n\npublic class App {\n  public static void main (String[] args) {\n System.out.println("Hello World!"); \n} \n}',
+              pkg
+            )
+            local f, err = io.open(app_path, "w")
+            if not f then
+              vim.notify("Error creando App.java: " .. (err or "unknown"), vim.log.levels.ERROR)
+            else
+              f:write(content)
+              f:close()
+              vim.notify(" Clase App creada: " .. vim.log.levels.INFO)
+            end
+          end
+        end
+      end)
+
+      vim.notify("󰏔 Paquete creado: " .. target_dir, vim.log.levels.INFO)
     end)
   end)
 end
 
--- Función para configurar opciones desde fuera
+-- -- Function to configure options from outside
 function M.setup(user_config)
   config = vim.tbl_deep_extend("force", config, user_config or {})
 end
