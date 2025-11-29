@@ -19,3 +19,11 @@ end, { desc = "Change Statusline Style" })
 
 -- Terminal
 map("n", "<leader>th", "<cmd>Terminal<cr>", { desc = "[T]erminal [H]orizontal" })
+
+-- JAVA
+map(
+  "n",
+  "<leader>jn",
+  "<cmd>lua require('telescope').extensions.java_creator.java_creator()<CR>",
+  { desc = "[J]ava [C]reator PRO" }
+)
