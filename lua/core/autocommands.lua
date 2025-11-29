@@ -209,7 +209,7 @@ vim.api.nvim_create_user_command("Terminal", function(args)
 
   -- Altura y ancho dinámicos (porcentaje del editor)
   local height = math.floor(vim.o.lines * 0.3) -- 25% de la altura del editor
-  local width = vim.o.columns - nvimtree_width
+  local width = vim.o.columns - nvimtree_width - 3
   local bottom_padding = 3
 
   -- Configuración del terminal flotante abajo
