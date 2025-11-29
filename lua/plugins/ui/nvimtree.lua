@@ -13,7 +13,7 @@ return {
   opts = {
     -- Tree appearance
     view = {
-      width = 20,
+      width = 30,
       side = "left",
       number = false,
       relativenumber = false,

@@ -10,7 +10,7 @@ return {
       max_height = 10,
 
       -- Animación y render
-      render = "default",
+      render = "compact",
       stages = "slide",
       timeout = 3000,
       fps = 30,
