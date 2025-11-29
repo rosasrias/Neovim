@@ -24,12 +24,16 @@ return {
     { "<leader>fM", "<cmd>Telescope man_pages<cr>", desc = "[F]ind [M]an Pages" },
   },
   dependencies = {
-    { "nvim-lua/plenary.nvim", lazy = false },
+    "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope-ui-select.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   },
-  opts = {
-    defaults = {
+  config = function(_, opts)
+    local telescope = require "telescope"
+    local actions = require "telescope.actions"
+
+    -- Configuración por defecto
+    opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
       layout_strategy = "horizontal",
       layout_config = {
         horizontal = {
@@ -62,39 +66,31 @@ return {
       color_devicons = true,
       winblend = 0,
 
-      find_command = {
-        "rg",
-        "--hidden",
-        "--glob=!**/.git/*",
-        "--glob=!**/node_modules/*",
+      mappings = {
+        i = {
+          ["<C-j>"] = actions.move_selection_next,
+          ["<C-k>"] = actions.move_selection_previous,
+          ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+          ["<C-s>"] = actions.select_horizontal,
+          ["<C-d>"] = actions.preview_scrolling_down,
+          ["<C-u>"] = actions.preview_scrolling_up,
+        },
+        n = {
+          ["<esc>"] = actions.close,
+          ["q"] = actions.close,
+        },
       },
-    },
-  },
-  config = function(_, opts)
-    local telescope = require "telescope"
-    local actions = require "telescope.actions"
+    })
 
-    opts.defaults.mappings = {
-      i = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
-        ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-        ["<C-s>"] = actions.select_horizontal,
-        ["<C-d>"] = actions.preview_scrolling_down,
-        ["<C-u>"] = actions.preview_scrolling_up,
-      },
-      n = {
-        ["<esc>"] = actions.close,
-        ["q"] = actions.close,
-      },
-    }
-
+    -- Configuración de extensiones
     opts.extensions = {
-      ["ui-select"] = require("telescope.themes").get_dropdown(),
-      file_browser = {
-        theme = "ivy",
-        hijack_netrw = true,
-        hidden = { file_browser = true, folder_browser = true },
+      ["ui-select"] = {
+        require("telescope.themes").get_dropdown {
+          layout_config = {
+            height = 50,
+            width = 50,
+          },
+        },
       },
       fzf = {
         fuzzy = true,
@@ -104,11 +100,11 @@ return {
       },
     }
 
+    ---@diagnostic disable-next-line: redundant-parameter
     telescope.setup(opts)
 
-    -- Load extensions
-    for _, ext in ipairs { "ui-select", "fzf" } do
-      pcall(telescope.load_extension, ext)
-    end
+    -- Cargar extensiones
+    telescope.load_extension "ui-select"
+    telescope.load_extension "fzf"
   end,
 }
