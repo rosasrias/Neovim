@@ -1,5 +1,6 @@
 return {
   "stevearc/dressing.nvim",
+  config = true,
   event = "VeryLazy",
   opts = {
     border = "solid",
