@@ -246,6 +246,7 @@ M.toggle_transparency = function()
   update_config_value("transparency", tostring(vim.g.transparency))
 
   require("themes").load_all_highlights()
+  vim.cmd "ReloadTheme"
   vim.notify("Transparency: " .. tostring(vim.g.transparency), vim.log.levels.INFO)
 end
 
