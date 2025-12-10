@@ -1,4 +1,3 @@
--- lua/ui/buf/handlers.lua
 local buffers = require "ui.buf.buffers"
 
 vim.cmd [[
@@ -39,7 +38,7 @@ vim.cmd [[
   endfunction
 ]]
 
--- User commands (estos se mantienen como están)
+-- User commands
 vim.api.nvim_create_user_command("BufflinePrev", function()
   vim.cmd("b " .. buffers.get_prev_buffer())
 end, {})

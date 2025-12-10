@@ -1,4 +1,3 @@
--- lua/ui/buf/render.lua
 local M = {}
 
 local state = require "ui.buf.state"
@@ -89,13 +88,13 @@ function M.calculate_buffer_width(buf)
   return vim.fn.strdisplaywidth(truncated) + 7
 end
 
--- Función para formatear un buffer, usando concatenación directa
+-- Function to format a buffer using direct concatenation
 function M.format_buffer(buf)
   local is_active = buf == vim.api.nvim_get_current_buf()
   local icon, icon_hl = M.get_buffer_icon(buf)
   local display_name = M.get_buffer_display_name(buf)
 
-  -- truncar si se pasa de largo
+  -- truncate if it goes too far
   if #display_name > 25 then
     display_name = "…" .. display_name:sub(-22)
   end

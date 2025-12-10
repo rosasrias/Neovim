@@ -1,4 +1,3 @@
--- lua/ui/bufferline/init.lua
 local M = {}
 
 function M.setup()

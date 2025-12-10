@@ -1,4 +1,3 @@
--- lua/ui/bufferline/buffers.lua
 local M = {}
 
 local EXCLUDED_FILETYPES = {

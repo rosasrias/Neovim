@@ -1,4 +1,3 @@
--- lua/ui/bufferline/config.lua
 local M = {}
 
 M.keymaps = {

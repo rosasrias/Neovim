@@ -1,4 +1,3 @@
--- lua/ui/bufferline/icons.lua
 local M = {}
 
 M.ICONS = {

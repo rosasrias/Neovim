@@ -1,4 +1,3 @@
--- lua/ui/bufferline/state.lua
 local M = {}
 
 M.scroll_offset = 1
@@ -44,13 +43,13 @@ function M.get_visible_range(total_buffers, available_space, min_buffers)
   local total_width = 0
   local last_index = M.scroll_offset
 
-  -- Reset si no hay buffers
+  -- Reset if the are no buffers
   if total_buffers == 0 then
     M.scroll_offset = 1
     return 1, 0
   end
 
-  -- Calcular cuántos buffers caben realmente
+  -- Calculate how many buffer actually fit
   for i = M.scroll_offset, total_buffers do
     local buf_width = M.visible_buffers[i] and M.visible_buffers[i].width or 0
     if (total_width + buf_width > available_space) and (visible_count >= min_buffers) then
@@ -61,7 +60,7 @@ function M.get_visible_range(total_buffers, available_space, min_buffers)
     last_index = i
   end
 
-  -- Ajustar scroll si estamos mostrando menos de lo mínimo
+  -- Adjust scroll if we are showing less than the minimum
   if visible_count < min_buffers and M.scroll_offset > 1 then
     local needed = min_buffers - visible_count
     M.scroll_offset = math.max(1, M.scroll_offset - needed)
