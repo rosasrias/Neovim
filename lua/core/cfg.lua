@@ -1,9 +1,25 @@
 local M = {}
 
 M.ui = {
-  theme = 'cosmicdecay',
+  theme = 'onedarkpro',
   transparency = false,
   statusStyle = 'fancy',
 }
 
 return M
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
