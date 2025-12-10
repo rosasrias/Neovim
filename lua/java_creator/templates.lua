@@ -3,7 +3,7 @@ local M = {}
 -- Base templates (without package line)
 M.generators = {}
 
-M.generators["Class"] = function(name, _opts)
+M.generators["Class"] = function(name)
   return string.format(
     [[
 public class %s {
@@ -14,7 +14,7 @@ public class %s {
   )
 end
 
-M.generators["Interface"] = function(name, _opts)
+M.generators["Interface"] = function(name)
   return string.format(
     [[
 public interface %s {
@@ -57,7 +57,7 @@ public record %s(%s) {
   )
 end
 
-M.generators["Abstract"] = function(name, _opts)
+M.generators["Abstract"] = function(name)
   return string.format(
     [[
 public abstract class %s {
@@ -68,7 +68,7 @@ public abstract class %s {
   )
 end
 
-M.generators["Exception"] = function(name, _opts)
+M.generators["Exception"] = function(name)
   return string.format(
     [[
 public class %s extends Exception {
