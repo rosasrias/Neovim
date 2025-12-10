@@ -151,9 +151,8 @@ function M.get_tabline()
   end
 
   -- Build full tabline
-  local scroll_left = (state.scroll_offset > 1) and "%#BufflineButtonScroll#%@v:lua.BufflineScrollLeft@  %X" or ""
-  local scroll_right = (last_index < #all_buffers) and "%#BufflineButtonScroll#%@v:lua.BufflineScrollRight@  %X"
-    or ""
+  local scroll_left = (state.scroll_offset > 1) and "%#BufflineButtonScroll#%@BufflineScrollLeft@  %X" or ""
+  local scroll_right = (last_index < #all_buffers) and "%#BufflineButtonScroll#%@BufflineScrollRight@  %X" or ""
 
   local start = (buffline ~= "") and "%#BufflineEmptyColor#" or "%#BuffLineEmpty#"
   local treespace = "%#BufflineTree#" .. string.rep(" ", tree_width)
