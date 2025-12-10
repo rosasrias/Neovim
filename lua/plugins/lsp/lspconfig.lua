@@ -125,6 +125,7 @@ return {
       "csharp_ls",
       "taplo",
       "lemminx",
+      "emmet_ls",
     }
 
     for _, server in ipairs(servers) do
@@ -173,40 +174,40 @@ return {
     })
     vim.lsp.enable "lua_ls"
 
-    vim.lsp.config("emmet_ls", {
-      on_attach = function(client, bufnr)
-        M.on_attach(client, bufnr)
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.documentRangeFormattingProvider = false
-      end,
-      capabilities = M.capabilities,
-      filetypes = {
-        "html",
-        "css",
-        "scss",
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "vue",
-        "svelte",
-        "php",
-        "twig",
-      },
-      initialize_options = {
-        html = {
-          options = {
-            ["bem.enabled"] = true,
-          },
-        },
-        php = {
-          options = {
-            ["bem.enabled"] = true,
-          },
-        },
-      },
-    })
-    vim.lsp.enable "emmet_ls"
+    -- vim.lsp.config("emmet_ls", {
+    --   on_attach = function(client, bufnr)
+    --     M.on_attach(client, bufnr)
+    --     client.server_capabilities.documentFormattingProvider = false
+    --     client.server_capabilities.documentRangeFormattingProvider = false
+    --   end,
+    --   capabilities = M.capabilities,
+    --   filetypes = {
+    --     "html",
+    --     "css",
+    --     "scss",
+    --     "javascript",
+    --     "javascriptreact",
+    --     "typescript",
+    --     "typescriptreact",
+    --     "vue",
+    --     "svelte",
+    --     "php",
+    --     "twig",
+    --   },
+    --   initialize_options = {
+    --     html = {
+    --       options = {
+    --         ["bem.enabled"] = true,
+    --       },
+    --     },
+    --     php = {
+    --       options = {
+    --         ["bem.enabled"] = true,
+    --       },
+    --     },
+    --   },
+    -- })
+    -- vim.lsp.enable "emmet_ls"
 
     vim.lsp.config("intelephense", {
       on_attach = M.on_attach,
