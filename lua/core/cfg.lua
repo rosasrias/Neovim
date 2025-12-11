@@ -1,25 +1,9 @@
 local M = {}
 
 M.ui = {
-  theme = 'onedarkpro',
+  theme = "onedark",
   transparency = false,
-  statusStyle = 'fancy',
+  statusStyle = "fancy",
 }
 
 return M
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
