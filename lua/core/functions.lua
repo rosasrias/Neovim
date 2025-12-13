@@ -224,28 +224,28 @@ local function build_run()
     -- C / C++
     ---------------------------------------------------------
     -- IN LINUX DESCOMENT
-    -- c = {
-    --   [ICONS.RUN .. " Run"] = "$fileBase",
-    --   [ICONS.BUILD .. " Compile"] = "gcc % -o $fileBase",
-    --   [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "gcc % -o $fileBase && $fileBase",
-    -- },
-
-    -- cpp = {
-    --   [ICONS.RUN .. " Run"] = "$fileBase",
-    --   [ICONS.BUILD .. " Compile"] = "g++ % -o $fileBase",
-    --   [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "g++ % -o $fileBase && $fileBase",
-    -- },
-    -- FOR WINDOWS
     c = {
-      [ICONS.RUN .. " Run"] = ".\\$fileBase.exe",
+      [ICONS.RUN .. " Run"] = "$fileBase",
       [ICONS.BUILD .. " Compile"] = "gcc % -o $fileBase",
-      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "gcc % -o $fileBase && .\\$fileBase.exe",
+      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "gcc % -o $fileBase && $fileBase",
     },
+
     cpp = {
-      [ICONS.RUN .. " Run"] = ".\\$fileBase.exe",
+      [ICONS.RUN .. " Run"] = "$fileBase",
       [ICONS.BUILD .. " Compile"] = "g++ % -o $fileBase",
-      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "g++ % -o $fileBase && .\\$fileBase.exe",
+      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "g++ % -o $fileBase && $fileBase",
     },
+    -- FOR WINDOWS
+    -- c = {
+    --   [ICONS.RUN .. " Run"] = ".\\$fileBase.exe",
+    --   [ICONS.BUILD .. " Compile"] = "gcc % -o $fileBase",
+    --   [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "gcc % -o $fileBase && .\\$fileBase.exe",
+    -- },
+    -- cpp = {
+    --   [ICONS.RUN .. " Run"] = ".\\$fileBase.exe",
+    --   [ICONS.BUILD .. " Compile"] = "g++ % -o $fileBase",
+    --   [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "g++ % -o $fileBase && .\\$fileBase.exe",
+    -- },
 
     ---------------------------------------------------------
     -- Python
