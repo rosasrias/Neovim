@@ -1,6 +1,7 @@
 local colors = require("themes").get_theme_tb "base_30"
 local theme = require("themes").get_theme_tb "base_16"
 local lighten = require("themes.colors").change_hex_lightness
+local blend = require("themes.colors").blend
 
 local defaults = {
   Added = { fg = colors.green },
@@ -55,6 +56,8 @@ local defaults = {
   healthSuccess = { bg = colors.green, fg = colors.black },
   WinBar = { bg = "NONE" },
   WinBarNC = { bg = "NONE" },
+  TabLineSel = { bg = colors.purple, fg = colors.black, bold = true },
+  TabLine = { fg = colors.purple, bg = blend(colors.purple, colors.black, 0.10) },
 
   -- lazy.nvim
   LazyH1 = { bg = colors.green, fg = colors.black },

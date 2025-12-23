@@ -34,6 +34,7 @@ return {
       php = { "php-cs-fixer" },
       toml = { "taplo" },
       ps1 = { "prettier" },
+      bash = { "shfmt" },
     },
 
     format_on_save = {

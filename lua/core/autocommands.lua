@@ -197,42 +197,64 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Set indentation to 2 spaces for common web dev files",
 })
 
-vim.api.nvim_create_user_command("Terminal", function(args)
-  local command = args.args == "" and vim.o.shell or args.args
+local function open_floating_terminal(opts)
+  local command = opts.command or vim.o.shell
+  local mode = opts.mode or "horizontal"
 
-  -- Detectar si NvimTree está abierto
+  -- Detectar NvimTree
   local nvimtree_width = 0
   local ok, view = pcall(require, "nvim-tree.view")
   if ok and view.is_visible() then
     nvimtree_width = view.View.width
   end
 
-  -- Altura y ancho dinámicos (porcentaje del editor)
-  local height = math.floor(vim.o.lines * 0.3) -- 25% de la altura del editor
-  local width = vim.o.columns - nvimtree_width - 3
-  local bottom_padding = 3
+  local lines = vim.o.lines
+  local columns = vim.o.columns
 
-  -- Configuración del terminal flotante abajo
-  local config = {
-    relative = "editor",
-    width = width,
-    height = height,
-    border = "solid",
-    title = string.format(" Terminal (%s) ", command),
-    title_pos = "left",
-    style = "minimal",
-    row = vim.o.lines - height - bottom_padding, -- lo deja pegado al fondo
-    col = nvimtree_width,
-  }
+  local config
+
+  if mode == "horizontal" then
+    local height = math.floor(lines * 0.3)
+    local bottom_padding = 3
+
+    config = {
+      relative = "editor",
+      width = columns - nvimtree_width - 3,
+      height = height,
+      row = lines - height - bottom_padding,
+      col = nvimtree_width,
+      border = "solid",
+      title = " Terminal ",
+      title_pos = "left",
+      style = "minimal",
+    }
+  elseif mode == "vertical" then
+    local width = math.floor(columns * 0.4)
+
+    config = {
+      relative = "editor",
+      width = width,
+      height = lines - 6,
+      row = 2,
+      col = columns - width - 2,
+      border = "solid",
+      title = " Terminal ",
+      title_pos = "left",
+      style = "minimal",
+    }
+  else
+    vim.notify("Modo de terminal inválido: " .. mode, vim.log.levels.ERROR)
+    return
+  end
 
   -- Crear buffer y ventana
   local buffer = vim.api.nvim_create_buf(true, false)
   local window = vim.api.nvim_open_win(buffer, true, config)
 
-  -- Estilo visual
+  -- Highlight
   vim.api.nvim_win_set_option(window, "winhighlight", "FloatTitle:HarpoonTitle,FloatBorder:NormalFloat")
 
-  -- Cerrar con "q"
+  -- Keymap de cierre
   vim.keymap.set("n", "q", function()
     if vim.api.nvim_win_is_valid(window) then
       vim.api.nvim_win_close(window, true)
@@ -242,12 +264,28 @@ vim.api.nvim_create_user_command("Terminal", function(args)
     end
   end, { buffer = buffer })
 
-  -- Iniciar terminal
+  -- Terminal
   vim.api.nvim_buf_set_option(buffer, "filetype", "terminal")
   vim.api.nvim_feedkeys("i", "n", true)
-  vim.fn.termopen(command)
+  if command == "" then
+    vim.fn.termopen(vim.o.shell)
+  else
+    vim.fn.termopen { vim.o.shell, "-c", command }
+  end
+end
+
+vim.api.nvim_create_user_command("Terminal", function(args)
+  local mode = args.fargs[1] or "horizontal"
+  local command = table.concat(args.fargs, " ", 2)
+
+  open_floating_terminal {
+    mode = mode,
+    command = command ~= "" and command or vim.o.shell,
+  }
 end, {
-  desc = "Home-made terminal command.",
+  desc = "Floating terminal (horizontal | vertical)",
   nargs = "*",
-  complete = "shellcmd",
+  complete = function()
+    return { "horizontal", "vertical" }
+  end,
 })

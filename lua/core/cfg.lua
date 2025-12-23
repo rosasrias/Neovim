@@ -1,9 +1,9 @@
 local M = {}
 
 M.ui = {
-  theme = "onedark",
+  theme = 'gray',
   transparency = false,
-  statusStyle = "fancy",
+  statusStyle = 'fancy',
 }
 
 return M

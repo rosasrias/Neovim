@@ -225,15 +225,15 @@ local function build_run()
     ---------------------------------------------------------
     -- IN LINUX DESCOMENT
     c = {
-      [ICONS.RUN .. " Run"] = "$fileBase",
+      [ICONS.RUN .. " Run"] = "./$fileBase",
       [ICONS.BUILD .. " Compile"] = "gcc % -o $fileBase",
-      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "gcc % -o $fileBase && $fileBase",
+      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "gcc % -o $fileBase && ./$fileBase",
     },
 
     cpp = {
-      [ICONS.RUN .. " Run"] = "$fileBase",
+      [ICONS.RUN .. " Run"] = "./$fileBase",
       [ICONS.BUILD .. " Compile"] = "g++ % -o $fileBase",
-      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "g++ % -o $fileBase && $fileBase",
+      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "g++ % -o $fileBase && ./$fileBase",
     },
     -- FOR WINDOWS
     -- c = {

@@ -3,8 +3,8 @@ local o = vim.o
 local g = vim.g
 
 opt.fileformats = { "unix", "dos" }
-o.shell = "pwsh"
-o.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
+-- o.shell = vim.o.shell
+-- -- o.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
 o.shellquote = ""
 o.shellxquote = ""
 o.laststatus = 3
@@ -75,16 +75,14 @@ g.transparency = cfg.transparency
 g.statusStyle = cfg.statusstyle
 
 if vim.loop.os_uname().sysname == "Windows_NT" then
-  g.clipboard = {
-    name = "win32yank",
-    copy = {
-      ["+"] = "win32yank.exe -i --crlf",
-      ["*"] = "win32yank.exe -i --crlf",
-    },
-    paste = {
-      ["+"] = "win32yank.exe -o --lf",
-      ["*"] = "win32yank.exe -o --lf",
-    },
-    cache_enabled = 0,
-  }
+  o.shell = "pwsh"
+  o.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
+  o.shellquote = ""
+  o.shellxquote = ""
+else
+  -- Linux / macOS
+  o.shell = "/bin/zsh"
+  o.shellcmdflag = "-lc"
+  o.shellquote = ""
+  o.shellxquote = ""
 end

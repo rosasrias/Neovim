@@ -34,5 +34,13 @@ require("java_creator").setup()
 vim.filetype.add {
   extension = {
     xaml = "xml",
+    ["http"] = "http",
+  },
+}
+
+vim.g.db_ui_custom_connections = {
+  {
+    name = "ECOMG4 MySQL (Docker)",
+    url = "mysql://ecom:ecom123@localhost:3306/ecommerce_mvp",
   },
 }
