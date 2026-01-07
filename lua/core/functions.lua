@@ -18,13 +18,13 @@ end
 ---------------------------------------------------------
 local function substitute(cmd)
   return cmd
-    :gsub("%%", vim.fn.expand "%")
-    :gsub("$fileBase", vim.fn.expand "%:r")
-    :gsub("$filePath", vim.fn.expand "%:p")
-    :gsub("$file", vim.fn.expand "%")
-    :gsub("$dir", vim.fn.expand "%:p:h")
-    :gsub("#", vim.fn.expand "#")
-    :gsub("$altFile", vim.fn.expand "#")
+      :gsub("%%", vim.fn.expand "%")
+      :gsub("$fileBase", vim.fn.expand "%:r")
+      :gsub("$filePath", vim.fn.expand "%:p")
+      :gsub("$file", vim.fn.expand "%")
+      :gsub("$dir", vim.fn.expand "%:p:h")
+      :gsub("#", vim.fn.expand "#")
+      :gsub("$altFile", vim.fn.expand "#")
 end
 
 ---------------------------------------------------------
@@ -299,7 +299,8 @@ local function build_run()
     kt = {
       [ICONS.BUILD .. " Compile"] = "kotlinc % -include-runtime -d $fileBase.jar",
       [ICONS.RUN .. " Run"] = "java -jar $fileBase.jar",
-      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "kotlinc % -include-runtime -d $fileBase.jar && java -jar $fileBase.jar",
+      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] =
+      "kotlinc % -include-runtime -d $fileBase.jar && java -jar $fileBase.jar",
     },
 
     ---------------------------------------------------------
@@ -332,6 +333,20 @@ local function build_run()
       [ICONS.BUILD .. " Build"] = "zig build-exe %",
       [ICONS.RUN .. " Run"] = "./$fileBase",
       [ICONS.RUN .. ICONS.BUILD .. " Build & Run"] = "zig build-exe % && ./$fileBase",
+    },
+
+    ---------------------------------------------------------
+    -- HTML
+    ---------------------------------------------------------
+    html = {
+      [ICONS.RUN .. " Live Server"] = function()
+        if vim.fn.executable "live-server" == 0 then
+          notify("live-server no está instalado", vim.log.levels.ERROR)
+          return
+        end
+
+        open_floating_terminal("live-server $dir")
+      end,
     },
   }
 
