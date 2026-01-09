@@ -1,8 +1,7 @@
 return {
   {
     "ellisonleao/dotenv.nvim",
-    lazy = false, -- IMPORTANTE: cargar al inicio
-    priority = 1000,
+    event = "VeryLazy",
     config = function()
       require("dotenv").setup {
         enable_on_load = true,
