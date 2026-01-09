@@ -1,3 +1,4 @@
+vim.g.start_time = vim.uv.hrtime()
 vim.g.mapleader = " "
 
 require "core.options"
@@ -29,7 +30,6 @@ require "core.autocommands"
 require "ui"
 require("themes").load_all_highlights()
 require("colorify").run()
-require("java_creator").setup()
 
 vim.filetype.add {
   extension = {
