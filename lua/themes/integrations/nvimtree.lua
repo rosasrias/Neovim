@@ -56,27 +56,50 @@ return {
     bold = true,
   },
 
-  NvimTreeFolderSrc = { fg = colors.purple },
-  NvimTreeFolderPublic = { fg = colors.green },
-  NvimTreeFolderAssets = { fg = colors.cyan },
+  -- Core
+  NvimTreeFolderSrc = { fg = colors.blue },
+  NvimTreeFolderApp = { fg = colors.blue },
+  NvimTreeFolderMain = { fg = colors.baby_pink },
+  NvimTreeFolderLib = { fg = colors.cyan },
+
+  -- Frontend
   NvimTreeFolderComponents = { fg = colors.yellow },
   NvimTreeFolderHooks = { fg = colors.teal },
   NvimTreeFolderContext = { fg = colors.orange },
-  NvimTreeFolderModels = { fg = colors.purple },
-  NvimTreeFolderServices = { fg = colors.red },
-  NvimTreeFolderTests = { fg = colors.red },
-  NvimTreeFolderConfig = { fg = colors.purple },
-  NvimTreeFolderMigrations = { fg = colors.pink },
-  NvimTreeFolderDocs = { fg = colors.yellow },
-  NvimTreeFolderDist = { fg = colors.grey_fg },
-  NvimTreeFolderLib = { fg = colors.cyan },
-  NvimTreeFolderVendor = { fg = colors.orange },
-  NvimTreeFolderMain = { fg = colors.baby_pink },
-  NvimTreeFolderJava = { fg = colors.red },
-  NvimTreeFolderResources = { fg = colors.teal },
-  NvimTreeFolderBuild = { fg = colors.green },
-  NvimTreeFolderPages = { fg = colors.blue },
+  NvimTreeFolderPages = { fg = colors.nord_blue },
+
+  -- Styles
   NvimTreeFolderStyles = { fg = colors.cyan },
+
+  -- Assets
+  NvimTreeFolderAssets = { fg = colors.cyan },
+  NvimTreeFolderPublic = { fg = colors.green },
+
+  -- Content / Docs
   NvimTreeFolderContent = { fg = colors.red },
+  NvimTreeFolderDocs = { fg = colors.yellow },
+
+  -- Tests
+  NvimTreeFolderTests = { fg = colors.red },
+
+  -- Config / Tooling
+  NvimTreeFolderConfig = { fg = colors.purple },
   NvimTreeFolderHusky = { fg = colors.nord_blue },
+
+  -- Build
+  NvimTreeFolderBuild = { fg = colors.green },
+  NvimTreeFolderDist = { fg = colors.grey_fg },
+
+  -- Dependencies
+  NvimTreeFolderDeps = { fg = colors.orange },
+  NvimTreeFolderVendor = { fg = colors.orange },
+
+  -- Database
+  NvimTreeFolderDatabase = { fg = colors.purple },
+  NvimTreeFolderMigrations = { fg = colors.pink },
+
+  -- Misc
+  NvimTreeFolderTemplates = { fg = colors.lavender },
+  NvimTreeFolderStorage = { fg = colors.nord_blue },
+  NvimTreeFolderWork = { fg = colors.sun },
 }
