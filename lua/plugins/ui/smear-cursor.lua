@@ -1,6 +1,6 @@
 return {
   "sphamba/smear-cursor.nvim",
-  event = "UIEnter", -- se activa cuando entra la interfaz
+  event = "VeryLazy", -- se activa cuando entra la interfaz
   opts = {
     smear_between_buffers = true,
     smear_between_neighbor_lines = true,
