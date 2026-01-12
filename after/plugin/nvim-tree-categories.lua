@@ -38,16 +38,62 @@ local folder_icons_open = {
 }
 
 local folder_families = {
+  core = {
+    icon_key = "source",
+    icon = folder_icons.source,
+    match = {
+      "src",
+      "source",
+      "app",
+      "apps?",
+      "lib",
+      "libs?",
+      "core",
+      "main",
+      "internal",
+      "shared",
+    },
+  },
+  frontend = {
+    icon_key = "frontend",
+    icon = folder_icons.frontend,
+    match = {
+      "frontend",
+      "client",
+      "hooks",
+      "context[s]",
+      "ui",
+      "views?",
+      "pages?",
+      "screens?",
+      "components?",
+      "widgets?",
+      "layouts?",
+      "containers?",
+      "composable[s]?",
+    },
+  },
+
+  state = {
+    icon_key = "state",
+    icon = folder_icons.state,
+    match = {
+      "store[s]?",
+      "state",
+      "states?",
+      "redux",
+      "zustand",
+      "recoil",
+      "jotai",
+      "signals?",
+      "atoms?",
+      "models?",
+    },
+  },
   source = {
     icon_key = "source",
     icon = folder_icons.source,
     match = { "src", "app", "lib", "main", "java", "kotlin" },
-  },
-
-  frontend = {
-    icon_key = "frontend",
-    icon = folder_icons.frontend,
-    match = { "components", "hooks", "context", "contexts", "pages" },
   },
 
   styles = {
@@ -206,13 +252,22 @@ function DirectoryNode:highlighted_icon()
   local name = self.name:lower()
 
   -- buscar familia
-  local family
+  local family_matchers = {}
+
   for _, fam in pairs(folder_families) do
     for _, pat in ipairs(fam.match) do
-      if name == pat then
-        family = fam
-        break
-      end
+      table.insert(family_matchers, {
+        pattern = "^" .. pat .. "$",
+        family = fam,
+      })
+    end
+  end
+
+  local family
+  for _, m in ipairs(family_matchers) do
+    if name:match(m.pattern) then
+      family = m.family
+      break
     end
   end
 
