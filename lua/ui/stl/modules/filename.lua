@@ -42,7 +42,7 @@ local M = function(m)
     if m == "minimal" or m == "blocks" then
       return "%#StalineFilename#  Windows "
     elseif m == "fancy" then
-      return "%#StalineFilenameFancy#" .. "  Windows  " .. "%#StalineFilenameSep#" .. " %#StalineEmptySpace#"
+      return "%#StalineFilenameFancy#" .. "  NVIM  " .. "%#StalineFilenameSep#" .. " %#StalineEmptySpace#"
     end
   end
 end
