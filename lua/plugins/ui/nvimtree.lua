@@ -4,6 +4,7 @@ return {
   cmd = { "NvimTreeToggle", "NvimTreeFocus" },
   dependencies = {
     "nvim-tree/nvim-web-devicons", -- Optional, for file icons
+    "rosasrias/nvim-tree-material-folders",
   },
   keys = {
     { "<C-n>", "<cmd>NvimTreeToggle<cr>", desc = "Toggle File Tree" },
@@ -99,4 +100,12 @@ return {
       ignore_list = {},
     },
   },
+  config = function(_, opts)
+    -- 1. setup normal de nvim-tree
+    require("nvim-tree").setup(opts)
+    -- 2. setup del plugin material folders
+    require("nvim_tree_material_folders").setup()
+    -- 3. aplicar el parche (IMPORTANTE)
+    require("nvim_tree_material_folders").apply()
+  end,
 }

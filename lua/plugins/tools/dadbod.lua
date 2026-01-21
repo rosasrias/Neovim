@@ -1,7 +1,7 @@
 return {
   {
     "ellisonleao/dotenv.nvim",
-    event = "VeryLazy",
+    cmd = { "Dotenv", "DotenvGet" },
     config = function()
       require("dotenv").setup {
         enable_on_load = true,

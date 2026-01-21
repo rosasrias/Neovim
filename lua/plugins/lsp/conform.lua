@@ -35,6 +35,7 @@ return {
       toml = { "taplo" },
       ps1 = { "prettier" },
       bash = { "shfmt" },
+      html = { "prettier" },
     },
 
     format_on_save = {

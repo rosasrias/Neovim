@@ -16,7 +16,7 @@ local defaults = {
   Comment = { fg = colors.light_grey },
   CursorLineNr = { fg = colors.nord_blue },
   LineNr = { fg = colors.grey },
-  FloatBorder = { fg = colors.darker_black },
+  FloatBorder = { fg = colors.darker_black, bg = colors.darker_black },
   FloatTitle = { fg = colors.black, bg = colors.blue },
   HarpoonTitle = { fg = colors.black, bg = colors.red },
   NormalFloat = { bg = colors.darker_black },

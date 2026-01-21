@@ -3,6 +3,17 @@ local o = vim.o
 local g = vim.g
 
 opt.fileformats = { "unix", "dos" }
+opt.guicursor = {
+  "n:block",
+  "v:block",
+  "i:ver25",
+  "c:ver25",
+  "ci:ver25",
+  "cr:ver25",
+  "o:block",
+  "r:hor20",
+  "sm:block",
+}
 -- o.shell = vim.o.shell
 -- -- o.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
 o.shellquote = ""

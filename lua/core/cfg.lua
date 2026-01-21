@@ -1,7 +1,7 @@
 local M = {}
 
 M.ui = {
-  theme = 'gray',
+  theme = 'onenord',
   transparency = false,
   statusStyle = 'fancy',
 }
