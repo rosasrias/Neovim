@@ -22,10 +22,12 @@ return {
         completion = {
           border = vim.g.transparency and "rounded" or "solid",
           scrollbar = false,
+          winhighlight = "Normal:CmpPmenu,FloatBorder:CmpBorder,CursorLine:PmenuSel,Search:None",
         },
         documentation = {
           border = vim.g.transparency and "rounded" or "solid",
           scrollbar = false,
+          winhighlight = "Normal:CmpPmenu,FloatBorder:CmpBorder,CursorLine:PmenuSel,Search:None",
         },
       },
 
