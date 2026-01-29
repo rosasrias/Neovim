@@ -20,6 +20,7 @@ local defaults = {
   FloatTitle = { fg = colors.black, bg = colors.blue },
   HarpoonTitle = { fg = colors.black, bg = colors.red },
   NormalFloat = { bg = colors.darker_black },
+  TermFloat = { bg = colors.darker_black },
   NvimInternalError = { fg = colors.red },
   WinSeparator = { fg = colors.line },
   Normal = { fg = theme.base05, bg = theme.base00 },

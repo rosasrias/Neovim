@@ -219,12 +219,12 @@ local function open_floating_terminal(opts)
 
     config = {
       relative = "editor",
-      width = columns - nvimtree_width - 3,
+      width = columns - nvimtree_width - 2,
       height = height,
       row = lines - height - bottom_padding,
       col = nvimtree_width,
-      border = "solid",
-      title = " Terminal ",
+      border = vim.g.transparency and "rounded" or "solid",
+      title = "  Terminal ",
       title_pos = "left",
       style = "minimal",
     }
@@ -237,8 +237,8 @@ local function open_floating_terminal(opts)
       height = lines - 6,
       row = 2,
       col = columns - width - 2,
-      border = "solid",
-      title = " Terminal ",
+      border = vim.g.transparency and "rounded" or "solid",
+      title = "  Terminal ",
       title_pos = "left",
       style = "minimal",
     }
@@ -252,7 +252,7 @@ local function open_floating_terminal(opts)
   local window = vim.api.nvim_open_win(buffer, true, config)
 
   -- Highlight
-  vim.api.nvim_win_set_option(window, "winhighlight", "FloatTitle:HarpoonTitle,FloatBorder:NormalFloat")
+  vim.api.nvim_win_set_option(window, "winhighlight", "FloatTitle:HarpoonTitle,TermFloat:NormalFloat")
 
   -- Keymap de cierre
   vim.keymap.set("n", "q", function()
@@ -288,4 +288,27 @@ end, {
   complete = function()
     return { "horizontal", "vertical" }
   end,
+})
+
+local function setup_devicon_hl()
+  local devicons = require "nvim-web-devicons"
+
+  for _, icon in pairs(devicons.get_icons()) do
+    local hl = icon.highlight
+    if hl then
+      local new_hl = hl .. "NoBG"
+
+      local fg_src = vim.api.nvim_get_hl(0, { name = hl }) or {}
+      local bg_src = vim.api.nvim_get_hl(0, { name = "BufflineBufOnInactive" }) or {}
+
+      vim.api.nvim_set_hl(0, new_hl, {
+        fg = fg_src.fg,
+        bg = bg_src.bg,
+      })
+    end
+  end
+end
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = setup_devicon_hl,
 })

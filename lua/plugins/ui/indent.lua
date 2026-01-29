@@ -9,13 +9,13 @@ return {
   },
   opts = {
     indent = {
-      char = "╎",
+      char = "│",
       highlight = "IblChar",
       priority = 1,
     },
     scope = {
       enabled = false,
-      char = "╎",
+      char = "│",
       highlight = "IblScopeChar",
       priority = 2,
       show_start = true,

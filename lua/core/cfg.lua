@@ -1,9 +1,9 @@
 local M = {}
 
 M.ui = {
-  theme = 'onenord',
-  transparency = false,
-  statusStyle = 'fancy',
+  theme = 'evergarden',
+  transparency = true,
+  statusStyle = 'minimal',
 }
 
 return M

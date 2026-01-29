@@ -3,25 +3,25 @@ return {
   cmd = { "Telescope" },
   lazy = true,
   keys = {
-    { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "[F]ind [F]iles" },
-    { "<leader>fg", "<cmd>Telescope git_files<cr>", desc = "[F]ind [G]it Files" },
-    { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "[F]ind [R]ecent Files" },
-    { "<leader>fn", "<cmd>enew<cr>", desc = "[F]ile [N]ew" },
+    { "<leader>ff", "<cmd>Telescope find_files<cr>",   desc = "[F]ind [F]iles" },
+    { "<leader>fg", "<cmd>Telescope git_files<cr>",    desc = "[F]ind [G]it Files" },
+    { "<leader>fr", "<cmd>Telescope oldfiles<cr>",     desc = "[F]ind [R]ecent Files" },
+    { "<leader>fn", "<cmd>enew<cr>",                   desc = "[F]ile [N]ew" },
 
-    { "<leader>fw", "<cmd>Telescope live_grep<cr>", desc = "[F]ind [W]ord" },
-    { "<leader>fW", "<cmd>Telescope grep_string<cr>", desc = "[F]ind Current [W]ord" },
+    { "<leader>fw", "<cmd>Telescope live_grep<cr>",    desc = "[F]ind [W]ord" },
+    { "<leader>fW", "<cmd>Telescope grep_string<cr>",  desc = "[F]ind Current [W]ord" },
 
-    { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "[F]ind [B]uffers" },
-    { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "[F]ind [H]elp" },
-    { "<leader>fm", "<cmd>Telescope marks<cr>", desc = "[F]ind [M]arks" },
-    { "<leader>fc", "<cmd>Telescope commands<cr>", desc = "[F]ind [C]ommands" },
-    { "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "[F]ind [K]eymaps" },
+    { "<leader>fb", "<cmd>Telescope buffers<cr>",      desc = "[F]ind [B]uffers" },
+    { "<leader>fh", "<cmd>Telescope help_tags<cr>",    desc = "[F]ind [H]elp" },
+    { "<leader>fm", "<cmd>Telescope marks<cr>",        desc = "[F]ind [M]arks" },
+    { "<leader>fc", "<cmd>Telescope commands<cr>",     desc = "[F]ind [C]ommands" },
+    { "<leader>fk", "<cmd>Telescope keymaps<cr>",      desc = "[F]ind [K]eymaps" },
 
     { "<leader>fa", "<cmd>Telescope autocommands<cr>", desc = "[F]ind [A]utocommands" },
-    { "<leader>fs", "<cmd>Telescope persisted<cr>", desc = "[F]ind [S]essions" },
-    { "<leader>fp", "<cmd>Telescope projects<cr>", desc = "[F]ind [P]rojects" },
-    { "<leader>fH", "<cmd>Telescope highlights<cr>", desc = "[F]ind [H]ighlights" },
-    { "<leader>fM", "<cmd>Telescope man_pages<cr>", desc = "[F]ind [M]an Pages" },
+    { "<leader>fs", "<cmd>Telescope persisted<cr>",    desc = "[F]ind [S]essions" },
+    { "<leader>fp", "<cmd>Telescope projects<cr>",     desc = "[F]ind [P]rojects" },
+    { "<leader>fH", "<cmd>Telescope highlights<cr>",   desc = "[F]ind [H]ighlights" },
+    { "<leader>fM", "<cmd>Telescope man_pages<cr>",    desc = "[F]ind [M]an Pages" },
   },
   dependencies = {
     "nvim-lua/plenary.nvim",
@@ -87,7 +87,7 @@ return {
       ["ui-select"] = {
         require("telescope.themes").get_dropdown {
           layout_config = {
-            height = 50,
+            --height = 0.4,
             width = 50,
           },
         },

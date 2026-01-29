@@ -30,11 +30,11 @@ return {
       require("plugins.lsp.extra.signature").setup(client, bufnr)
 
       local mappings = {
-        { "n", "K", vim.lsp.buf.hover, "Hover" },
-        { "n", "gD", vim.lsp.buf.declaration, "Go to declaration" },
-        { "n", "gd", vim.lsp.buf.definition, "Go to definition" },
-        { "n", "gi", vim.lsp.buf.implementation, "Go to implementation" },
-        { "n", "<leader>wa", vim.lsp.buf.add_workspace_folder, "Add workspace folder" },
+        { "n", "K",          vim.lsp.buf.hover,                   "Hover" },
+        { "n", "gD",         vim.lsp.buf.declaration,             "Go to declaration" },
+        { "n", "gd",         vim.lsp.buf.definition,              "Go to definition" },
+        { "n", "gi",         vim.lsp.buf.implementation,          "Go to implementation" },
+        { "n", "<leader>wa", vim.lsp.buf.add_workspace_folder,    "Add workspace folder" },
         { "n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, "Remove workspace folder" },
         {
           "n",
@@ -50,9 +50,9 @@ return {
           vim.lsp.buf.type_definition,
           "Go to type definition",
         },
-        { "n", "<leader>ra", require "plugins.lsp.extra.renamer", "Renamer" },
-        { { "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code action" },
-        { "n", "gr", vim.lsp.buf.references, "Show references" },
+        { "n",          "<leader>ra", require "plugins.lsp.extra.renamer", "Renamer" },
+        { { "n", "v" }, "<leader>ca", vim.lsp.buf.code_action,             "Code action" },
+        { "n",          "gr",         vim.lsp.buf.references,              "Show references" },
       }
 
       for _, m in ipairs(mappings) do
@@ -148,7 +148,7 @@ return {
         "--header-insertion=never",
         "--query-driver=C:/ProgramData/chocolatey/lib/winlibs/tools/mingw64/bin/*",
         "--background-index", -- indexado en segundo plano (más rápido con proyectos grandes)
-        "--clang-tidy", -- integra clang-tidy si lo tienes
+        "--clang-tidy",       -- integra clang-tidy si lo tienes
         "--completion-style=detailed",
         "--cross-file-rename",
       },

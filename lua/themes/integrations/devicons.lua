@@ -48,4 +48,5 @@ return {
   DevIconReadme = { fg = colors.cyan },
   DevIconEnv = { fg = colors.sun },
   DevIconHTTP = { fg = colors.blue },
+  DevIconPexe = { fg = colors.red },
 }

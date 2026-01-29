@@ -18,13 +18,13 @@ end
 ---------------------------------------------------------
 local function substitute(cmd)
   return cmd
-      :gsub("%%", vim.fn.expand "%")
-      :gsub("$fileBase", vim.fn.expand "%:r")
-      :gsub("$filePath", vim.fn.expand "%:p")
-      :gsub("$file", vim.fn.expand "%")
-      :gsub("$dir", vim.fn.expand "%:p:h")
-      :gsub("#", vim.fn.expand "#")
-      :gsub("$altFile", vim.fn.expand "#")
+    :gsub("%%", vim.fn.expand "%")
+    :gsub("$fileBase", vim.fn.expand "%:r")
+    :gsub("$filePath", vim.fn.expand "%:p")
+    :gsub("$file", vim.fn.expand "%")
+    :gsub("$dir", vim.fn.expand "%:p:h")
+    :gsub("#", vim.fn.expand "#")
+    :gsub("$altFile", vim.fn.expand "#")
 end
 
 ---------------------------------------------------------
@@ -57,15 +57,15 @@ local function open_floating_terminal(cmd)
     nvimtree_width = view.View.width
   end
 
-  local width = vim.o.columns - nvimtree_width - 3
+  local width = vim.o.columns - nvimtree_width - 2
   local bottom_padding = 3
 
   local config = {
     relative = "editor",
     width = width,
     height = height,
-    border = "solid",
-    title = " Terminal ",
+    border = vim.g.transparency and "rounded" or "solid",
+    title = "  Terminal ",
     title_pos = "left",
     style = "minimal",
     row = vim.o.lines - height - bottom_padding,
@@ -74,7 +74,7 @@ local function open_floating_terminal(cmd)
 
   local buffer = vim.api.nvim_create_buf(true, false)
   local window = vim.api.nvim_open_win(buffer, true, config)
-  vim.api.nvim_win_set_option(window, "winhighlight", "FloatTitle:HarpoonTitle,FloatBorder:NormalFloat")
+  vim.api.nvim_win_set_option(window, "winhighlight", "FloatTitle:HarpoonTitle,TermFloat:NormalFloat")
 
   vim.keymap.set("n", "q", function()
     if vim.api.nvim_win_is_valid(window) then
@@ -102,7 +102,7 @@ local function open_centered_terminal(cmd)
     relative = "editor",
     width = width,
     height = height,
-    border = "solid",
+    border = vim.g.transparency and "rounded" or "solid",
     title = cmd,
     title_pos = "center",
     style = "minimal",
@@ -112,7 +112,7 @@ local function open_centered_terminal(cmd)
 
   local buffer = vim.api.nvim_create_buf(true, false)
   local window = vim.api.nvim_open_win(buffer, true, config)
-  vim.api.nvim_win_set_option(window, "winhighlight", "FloatTitle:HarpoonTitle,FloatBorder:NormalFloat")
+  vim.api.nvim_win_set_option(window, "winhighlight", "FloatTitle:HarpoonTitle,TermFloat:NormalFloat")
 
   vim.keymap.set("n", "q", function()
     if vim.api.nvim_win_is_valid(window) then
@@ -299,8 +299,7 @@ local function build_run()
     kt = {
       [ICONS.BUILD .. " Compile"] = "kotlinc % -include-runtime -d $fileBase.jar",
       [ICONS.RUN .. " Run"] = "java -jar $fileBase.jar",
-      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] =
-      "kotlinc % -include-runtime -d $fileBase.jar && java -jar $fileBase.jar",
+      [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "kotlinc % -include-runtime -d $fileBase.jar && java -jar $fileBase.jar",
     },
 
     ---------------------------------------------------------
@@ -345,7 +344,7 @@ local function build_run()
           return
         end
 
-        open_floating_terminal("live-server $dir")
+        open_floating_terminal "live-server $dir"
       end,
     },
   }

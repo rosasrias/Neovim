@@ -70,10 +70,11 @@ function M.get_buffer_icon(buf)
   local new_hl = hl_group .. "NoBG"
   if vim.fn.hlID(new_hl) == 0 then
     local color = vim.api.nvim_get_hl(0, { name = hl_group }) or {}
+    local bg_src = vim.api.nvim_get_hl(0, { name = "BufflineBufOnModified" }) or {}
+
     vim.api.nvim_set_hl(0, new_hl, {
       fg = color.fg or "#cccccc",
-      bg = "NONE",
-      link = nil,
+      bg = bg_src.bg,
     })
   end
 

@@ -29,6 +29,11 @@ local function configure_general()
     fg = utils.blend(colors.white, colors.black, 0.6),
     bg = "NONE",
   }
+
+  M.TermFloat = {
+    fg = utils.blend(colors.white, colors.black, 0.6),
+    bg = "NONE",
+  }
 end
 
 local function configure_telescope()
@@ -130,6 +135,9 @@ local function configure_miscellaneous()
   M.TreesitterContext = { bg = "NONE" }
   M.NvimTreeNormal = { bg = "NONE" }
   M.NvimTreeNormalNC = { bg = "NONE" }
+  M.BuffLineTree = { bg = "NONE" }
+  M.TabLine = { bg = "NONE" }
+  M.TabLineFill = { bg = "NONE" }
   M.SagaNormal = { bg = "NONE" }
   M.SagaBorder = { bg = "NONE" }
   M.RenameNormal = { bg = "NONE" }
