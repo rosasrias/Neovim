@@ -28,7 +28,7 @@ local function substitute(cmd)
 end
 
 ---------------------------------------------------------
--- Detect shell (Bash / PS)
+-- Detect shell (Bash / PowerShell)
 ---------------------------------------------------------
 local function wrap_command(cmd)
   if vim.fn.has "win32" == 1 then
@@ -45,56 +45,11 @@ local function wrap_command(cmd)
 end
 
 ---------------------------------------------------------
--- Floating terminal (bottom)
+-- Floating terminal (tools only)
 ---------------------------------------------------------
 local function open_floating_terminal(cmd)
   local command = wrap_command(cmd)
-  local height = math.floor(vim.o.lines * 0.3)
 
-  local nvimtree_width = 0
-  local ok, view = pcall(require, "nvim-tree.view")
-  if ok and view.is_visible() then
-    nvimtree_width = view.View.width
-  end
-
-  local width = vim.o.columns - nvimtree_width - 2
-  local bottom_padding = 3
-
-  local config = {
-    relative = "editor",
-    width = width,
-    height = height,
-    border = vim.g.transparency and "rounded" or "solid",
-    title = "  Terminal ",
-    title_pos = "left",
-    style = "minimal",
-    row = vim.o.lines - height - bottom_padding,
-    col = nvimtree_width,
-  }
-
-  local buffer = vim.api.nvim_create_buf(true, false)
-  local window = vim.api.nvim_open_win(buffer, true, config)
-  vim.api.nvim_win_set_option(window, "winhighlight", "FloatTitle:HarpoonTitle,TermFloat:NormalFloat")
-
-  vim.keymap.set("n", "q", function()
-    if vim.api.nvim_win_is_valid(window) then
-      vim.api.nvim_win_close(window, true)
-    end
-    if vim.api.nvim_buf_is_valid(buffer) then
-      vim.api.nvim_buf_delete(buffer, { force = true })
-    end
-  end, { buffer = buffer })
-
-  vim.api.nvim_buf_set_option(buffer, "filetype", "terminal")
-  vim.api.nvim_feedkeys("i", "n", true)
-  vim.fn.termopen(command)
-end
-
----------------------------------------------------------
--- Floating centered terminal
----------------------------------------------------------
-local function open_centered_terminal(cmd)
-  local command = wrap_command(cmd)
   local width = math.floor(vim.o.columns * 0.8)
   local height = math.floor(vim.o.lines * 0.8)
 
@@ -103,29 +58,98 @@ local function open_centered_terminal(cmd)
     width = width,
     height = height,
     border = vim.g.transparency and "rounded" or "solid",
-    title = cmd,
+    title = "  Terminal ",
     title_pos = "center",
     style = "minimal",
     row = ((vim.o.lines - height) / 2) - 1,
     col = ((vim.o.columns - width) / 2),
   }
 
-  local buffer = vim.api.nvim_create_buf(true, false)
-  local window = vim.api.nvim_open_win(buffer, true, config)
-  vim.api.nvim_win_set_option(window, "winhighlight", "FloatTitle:HarpoonTitle,TermFloat:NormalFloat")
+  local buf = vim.api.nvim_create_buf(true, false)
+  local win = vim.api.nvim_open_win(buf, true, config)
+
+  vim.api.nvim_win_set_option(win, "winhighlight", "FloatTitle:HarpoonTitle,NormalFloat:NormalFloat")
 
   vim.keymap.set("n", "q", function()
-    if vim.api.nvim_win_is_valid(window) then
-      vim.api.nvim_win_close(window, true)
+    if vim.api.nvim_win_is_valid(win) then
+      vim.api.nvim_win_close(win, true)
     end
-    if vim.api.nvim_buf_is_valid(buffer) then
-      vim.api.nvim_buf_delete(buffer, { force = true })
+    if vim.api.nvim_buf_is_valid(buf) then
+      vim.api.nvim_buf_delete(buf, { force = true })
     end
-  end, { buffer = buffer })
+  end, { buffer = buf })
 
-  vim.api.nvim_buf_set_option(buffer, "filetype", "terminal")
-  vim.api.nvim_feedkeys("i", "n", true)
+  vim.api.nvim_buf_set_option(buf, "filetype", "terminal")
   vim.fn.termopen(command)
+  vim.cmd "startinsert"
+end
+
+---------------------------------------------------------
+-- Terminal helpers (VSCode style)
+---------------------------------------------------------
+local function get_main_window()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    local ft = vim.bo[buf].filetype
+    if ft ~= "NvimTree" and ft ~= "terminal" then
+      return win
+    end
+  end
+  return vim.api.nvim_get_current_win()
+end
+
+local function get_last_terminal_window()
+  local terms = {}
+
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].buftype == "terminal" then
+      local pos = vim.api.nvim_win_get_position(win)
+      table.insert(terms, { win = win, row = pos[1], col = pos[2] })
+    end
+  end
+
+  if #terms == 0 then
+    return nil
+  end
+
+  table.sort(terms, function(a, b)
+    if a.col == b.col then
+      return a.row < b.row
+    end
+    return a.col < b.col
+  end)
+
+  return terms[#terms].win
+end
+
+---------------------------------------------------------
+-- Open runner terminal (NON floating)
+---------------------------------------------------------
+local function open_runner_terminal(cmd, direction)
+  direction = direction or "horizontal"
+  local command = wrap_command(cmd)
+
+  local term_win = get_last_terminal_window()
+
+  if term_win then
+    vim.api.nvim_set_current_win(term_win)
+  else
+    vim.api.nvim_set_current_win(get_main_window())
+
+    if direction == "horizontal" then
+      vim.cmd "split"
+      vim.cmd "resize 12"
+    else
+      vim.cmd "vsplit"
+      vim.cmd "vertical resize 45"
+    end
+  end
+
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_win_set_buf(0, buf)
+  vim.fn.termopen(command)
+  vim.cmd "startinsert"
 end
 
 ---------------------------------------------------------
@@ -187,11 +211,11 @@ local function maven_detected_run()
   local mvn_cmd = string.format('mvn -q exec:java "-Dexec.mainClass=%s"', full_class)
   local full_cmd = cd_cmd .. " && " .. mvn_cmd
 
-  open_floating_terminal(full_cmd)
+  open_runner_terminal(full_cmd, "horizontal")
 end
 
 ---------------------------------------------------------
--- Build / Run selectors (ALL LANGUAGES)
+-- Build / Run selectors
 ---------------------------------------------------------
 local function build_run()
   local ext = vim.fn.expand "%:e"
@@ -199,12 +223,10 @@ local function build_run()
   local actions = {
 
     ---------------------------------------------------------
-    -- JAVA + MAVEN + SPRING BOOT
+    -- JAVA
     ---------------------------------------------------------
     java = {
-      [ICONS.RUN .. " Maven auto-run"] = function()
-        maven_detected_run()
-      end,
+      [ICONS.RUN .. " Maven auto-run"] = maven_detected_run,
       [ICONS.BUILD .. " Maven build"] = "mvn -q clean package",
       [ICONS.RUN .. " Spring Boot run"] = "mvn spring-boot:run",
       [ICONS.BUILD .. " Spring Boot build"] = "mvn -q clean install",
@@ -223,29 +245,17 @@ local function build_run()
     ---------------------------------------------------------
     -- C / C++
     ---------------------------------------------------------
-    -- IN LINUX DESCOMENT
     c = {
-      [ICONS.RUN .. " Run"] = "./$fileBase",
       [ICONS.BUILD .. " Compile"] = "gcc % -o $fileBase",
+      [ICONS.RUN .. " Run"] = "./$fileBase",
       [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "gcc % -o $fileBase && ./$fileBase",
     },
 
     cpp = {
-      [ICONS.RUN .. " Run"] = "./$fileBase",
       [ICONS.BUILD .. " Compile"] = "g++ % -o $fileBase",
+      [ICONS.RUN .. " Run"] = "./$fileBase",
       [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "g++ % -o $fileBase && ./$fileBase",
     },
-    -- FOR WINDOWS
-    -- c = {
-    --   [ICONS.RUN .. " Run"] = ".\\$fileBase.exe",
-    --   [ICONS.BUILD .. " Compile"] = "gcc % -o $fileBase",
-    --   [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "gcc % -o $fileBase && .\\$fileBase.exe",
-    -- },
-    -- cpp = {
-    --   [ICONS.RUN .. " Run"] = ".\\$fileBase.exe",
-    --   [ICONS.BUILD .. " Compile"] = "g++ % -o $fileBase",
-    --   [ICONS.RUN .. ICONS.BUILD .. " Compile & Run"] = "g++ % -o $fileBase && .\\$fileBase.exe",
-    -- },
 
     ---------------------------------------------------------
     -- Python
@@ -343,8 +353,7 @@ local function build_run()
           notify("live-server no está instalado", vim.log.levels.ERROR)
           return
         end
-
-        open_floating_terminal "live-server $dir"
+        open_runner_terminal("live-server $dir", "horizontal")
       end,
     },
   }
@@ -367,7 +376,7 @@ local function build_run()
         notify(err, vim.log.levels.ERROR)
       end
     else
-      open_floating_terminal(substitute(action))
+      open_runner_terminal(substitute(action), "horizontal")
     end
   end)
 end
@@ -380,12 +389,12 @@ local function lazygit_toggle()
     notify("LazyGit no está instalado", vim.log.levels.ERROR)
     return
   end
-  open_centered_terminal "lazygit"
+  open_floating_terminal "lazygit"
 end
 
 local function ranger_toggle()
   if vim.fn.executable "ranger" == 0 then
-    notify "Ranger no está instalado"
+    notify("Ranger no está instalado", vim.log.levels.ERROR)
     return
   end
   open_floating_terminal "ranger"

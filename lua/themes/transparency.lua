@@ -19,6 +19,7 @@ local function configure_general()
     "CursorLine",
     "MsgArea",
     "NvimTreeLineNr",
+    "TerminalNormal",
   }
 
   for _, hl in ipairs(general_highlights) do
@@ -30,7 +31,7 @@ local function configure_general()
     bg = "NONE",
   }
 
-  M.TermFloat = {
+  M.TerminalSeparator = {
     fg = utils.blend(colors.white, colors.black, 0.6),
     bg = "NONE",
   }

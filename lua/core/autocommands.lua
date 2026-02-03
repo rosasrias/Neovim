@@ -197,96 +197,140 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Set indentation to 2 spaces for common web dev files",
 })
 
-local function open_floating_terminal(opts)
-  local command = opts.command or vim.o.shell
-  local mode = opts.mode or "horizontal"
+-- ========= helpers =========
 
-  -- Detectar NvimTree
-  local nvimtree_width = 0
-  local ok, view = pcall(require, "nvim-tree.view")
-  if ok and view.is_visible() then
-    nvimtree_width = view.View.width
+local function get_main_window()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    local ft = vim.bo[buf].filetype
+    if ft ~= "NvimTree" and ft ~= "terminal" then
+      return win
+    end
+  end
+  return vim.api.nvim_get_current_win()
+end
+
+local function get_last_terminal_window()
+  local terms = {}
+
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].buftype == "terminal" then
+      local pos = vim.api.nvim_win_get_position(win)
+      table.insert(terms, { win = win, row = pos[1], col = pos[2] })
+    end
   end
 
-  local lines = vim.o.lines
-  local columns = vim.o.columns
-
-  local config
-
-  if mode == "horizontal" then
-    local height = math.floor(lines * 0.3)
-    local bottom_padding = 3
-
-    config = {
-      relative = "editor",
-      width = columns - nvimtree_width - 2,
-      height = height,
-      row = lines - height - bottom_padding,
-      col = nvimtree_width,
-      border = vim.g.transparency and "rounded" or "solid",
-      title = "  Terminal ",
-      title_pos = "left",
-      style = "minimal",
-    }
-  elseif mode == "vertical" then
-    local width = math.floor(columns * 0.4)
-
-    config = {
-      relative = "editor",
-      width = width,
-      height = lines - 6,
-      row = 2,
-      col = columns - width - 2,
-      border = vim.g.transparency and "rounded" or "solid",
-      title = "  Terminal ",
-      title_pos = "left",
-      style = "minimal",
-    }
-  else
-    vim.notify("Modo de terminal inválido: " .. mode, vim.log.levels.ERROR)
-    return
+  if #terms == 0 then
+    return nil
   end
 
-  -- Crear buffer y ventana
-  local buffer = vim.api.nvim_create_buf(true, false)
-  local window = vim.api.nvim_open_win(buffer, true, config)
-
-  -- Highlight
-  vim.api.nvim_win_set_option(window, "winhighlight", "FloatTitle:HarpoonTitle,TermFloat:NormalFloat")
-
-  -- Keymap de cierre
-  vim.keymap.set("n", "q", function()
-    if vim.api.nvim_win_is_valid(window) then
-      vim.api.nvim_win_close(window, true)
+  table.sort(terms, function(a, b)
+    if a.col == b.col then
+      return a.row < b.row
     end
-    if vim.api.nvim_buf_is_valid(buffer) then
-      vim.api.nvim_buf_delete(buffer, { force = true })
-    end
-  end, { buffer = buffer })
+    return a.col < b.col
+  end)
 
-  -- Terminal
-  vim.api.nvim_buf_set_option(buffer, "filetype", "terminal")
-  vim.api.nvim_feedkeys("i", "n", true)
-  if command == "" then
-    vim.fn.termopen(vim.o.shell)
+  return terms[#terms].win
+end
+
+-- ========= open terminal =========
+
+local function open_terminal_vscode_style(preferred_direction, command)
+  command = command or vim.o.shell
+  local term_win = get_last_terminal_window()
+
+  if term_win then
+    vim.api.nvim_set_current_win(term_win)
+
+    if preferred_direction == "horizontal" then
+      vim.cmd "vsplit"
+      vim.cmd "vertical resize 40"
+    else
+      vim.cmd "split"
+      vim.cmd "resize 15"
+    end
   else
-    vim.fn.termopen { vim.o.shell, "-c", command }
+    vim.api.nvim_set_current_win(get_main_window())
+
+    if preferred_direction == "horizontal" then
+      vim.cmd "split"
+      vim.cmd "resize 10"
+    else
+      vim.cmd "vsplit"
+      vim.cmd "vertical resize 40"
+    end
+  end
+
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_win_set_buf(0, buf)
+  vim.fn.termopen(command)
+  vim.cmd "startinsert"
+end
+
+-- ========= winbar logic =========
+
+local term_winbar_group = vim.api.nvim_create_augroup("TerminalWinbar", { clear = true })
+
+local function get_terminal_windows_ordered()
+  local terms = {}
+
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].buftype == "terminal" then
+      local pos = vim.api.nvim_win_get_position(win)
+      table.insert(terms, {
+        win = win,
+        row = pos[1],
+        col = pos[2],
+      })
+    end
+  end
+
+  table.sort(terms, function(a, b)
+    if a.col == b.col then
+      return a.row < b.row
+    end
+    return a.col < b.col
+  end)
+
+  return terms
+end
+
+local function refresh_terminal_winbars()
+  local terms = get_terminal_windows_ordered()
+  local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+
+  for i, term in ipairs(terms) do
+    local label = "  Terminal " .. i .. " — " .. cwd .. " "
+    vim.api.nvim_win_set_option(term.win, "winbar", "%#TerminalTitle#" .. label .. "%*%=")
   end
 end
 
-vim.api.nvim_create_user_command("Terminal", function(args)
-  local mode = args.fargs[1] or "horizontal"
-  local command = table.concat(args.fargs, " ", 2)
+vim.api.nvim_create_autocmd({ "TermOpen", "BufWipeout" }, {
+  group = term_winbar_group,
+  callback = function()
+    vim.schedule(refresh_terminal_winbars)
+  end,
+})
 
-  open_floating_terminal {
-    mode = mode,
-    command = command ~= "" and command or vim.o.shell,
-  }
-end, {
-  desc = "Floating terminal (horizontal | vertical)",
-  nargs = "*",
-  complete = function()
-    return { "horizontal", "vertical" }
+-- ========= keymaps =========
+
+vim.keymap.set("n", "<leader>th", function()
+  open_terminal_vscode_style "horizontal"
+end, { desc = "[T]erminal [H]orizontal" })
+
+vim.keymap.set("n", "<leader>tv", function()
+  open_terminal_vscode_style "vertical"
+end, { desc = "[T]erminal [V]ertical" })
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  callback = function()
+    vim.wo.winhl = table.concat({
+      "Normal:TerminalNormal",
+      "SignColumn:TerminalNormal",
+    }, ",")
   end,
 })
 
