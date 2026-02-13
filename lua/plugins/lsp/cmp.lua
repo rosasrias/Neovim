@@ -114,7 +114,17 @@ return {
 
       sources = {
         { name = "path" },
-        { name = "nvim_lsp" },
+        {
+          name = "nvim_lsp",
+          entry_filter = function(entry)
+            local client_name = entry.source.source.client.name
+            -- Only return Emmet results in styled-component template strings
+            return client_name ~= "emmet_language_server"
+              or entry.context.filetype == "css"
+              ---@diagnostic disable-next-line: undefined-global
+              or context.in_treesitter_capture "styled"
+          end,
+        },
         { name = "luasnip_choice" },
         { name = "snippy" },
         { name = "nvim_lua" },

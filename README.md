@@ -115,6 +115,103 @@ Todos los keymaps están centralizados en `lua/core/mappings.lua`. Algunos desta
 ![CAP 2](assets/images/cap2.png)
 ![CAP 3](assets/images/cap3.png)
 ![CAP 4](assets/images/cap4.png)
+--- 
+## 🧠 Autocompletado CSS en styled-components con Neovim
+
+Para tener autocompletado de CSS dentro de template literals de styled-components usando JSX/TSX en Neovim, necesitamos:
+
+- typescript-tools.nvim
+
+- typescript
+
+- typescript-styled-plugin
+
+![NOTA:] NO usar typescript-language-server en paralelo
+
+### Configuración en Neovim
+
+Instalar typescript-tools.nvim:
+```lua
+{
+  "pmizio/typescript-tools.nvim",
+  dependencies = { "nvim-lua/plenary.nvim" },
+  opts = {
+    filetypes = {
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+    },
+    settings = {
+      tsserver_plugins = {
+        "typescript-styled-plugin",
+      },
+    },
+  },
+}
+```
+
+![Alert]⚠  Importante: No usar ts_ls (typescript-language-server) al mismo tiempo.
+
+Verificar con:
+
+```bash 
+:LspInfo
+```
+
+
+Debe aparecer solo:
+
+typescript-tools
+2️⃣ Dependencias necesarias en cada proyecto
+
+En la raíz del proyecto:
+
+npm install --save-dev typescript
+npm install --save-dev typescript-styled-plugin
+
+Esto es obligatorio porque:
+
+typescript-tools necesita tsserver
+
+tsserver viene dentro del paquete typescript
+
+El plugin styled necesita estar instalado en el proyecto
+
+3️⃣ Verificación
+
+Podés verificar que TypeScript está instalado con:
+
+npx tsc --version
+
+Si devuelve una versión → todo ok.
+
+4️⃣ Resultado esperado
+
+En un archivo .jsx o .tsx:
+
+const Box = styled.div`
+  displ
+`
+
+Debería autocompletar:
+
+display
+
+Con sugerencias reales del CSS Language Service.
+
+🧱 Arquitectura del flujo
+
+Tree-sitter → highlighting
+
+typescript-tools → levanta tsserver
+
+tsserver + typescript-styled-plugin → entiende CSS dentro de template literals
+
+nvim-cmp → muestra el autocomplete
+
+Cada pieza cumple un rol. Si falta una, se rompe la cadena.
+
 
 ---
 
