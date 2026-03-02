@@ -14,11 +14,11 @@ return {
   opts = {
     formatters_by_ft = {
       lua = { "stylua" },
-      css = { "prettierd" },
+      css = { "prettier" },
       javascript = { "biome" },
-      javascriptreact = { "prettierd" },
-      typescript = { "prettierd" },
-      typescriptreact = { "prettierd" },
+      javascriptreact = { "prettier" },
+      typescript = { "prettier" },
+      typescriptreact = { "prettier" },
       json = { "biome" },
       yaml = { "yamlfix" },
       markdown = { "mdformat" },
