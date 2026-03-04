@@ -6,7 +6,7 @@ return {
   },
   config = function()
     require("ai-commit").setup({
-      openrouter_api_key = ""
+      openrouter_api_key = "",
       model = "arcee-ai/trinity-large-preview:free",
       auto_push = false,
     })
