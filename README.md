@@ -9,11 +9,11 @@
 ### Linux 
 
 ```bash
-# Cloná el repo en tu configuración de Neovim
-mv ~/.config/nvim ~/.config/nvim_backup   # (opcional, por si querés guardar la anterior)
+# Clona el repositorio en tu configuración de Neovim
+mv ~/.config/nvim ~/.config/nvim_backup   # (opcional, por si quieres guardar la anterior)
 git clone https://github.com/rosasrias/Neovim ~/.config/nvim
 
-# Entrá a Neovim y dejá que se instalen los plugins
+# Entra a Neovim y deja que se instalen los plugins
 nvim
 ```
 
@@ -21,23 +21,23 @@ nvim
 
 ```bash 
 
-# (Opcional) Hacé un respaldo de tu configuración actual
+# (Opcional) Haz un respaldo de tu configuración actual
 Rename-Item $env:LOCALAPPDATA\nvim "$env:LOCALAPPDATA\nvim_backup"
 
-# Cloná el repositorio con mi configuración
+# Clona el repositorio con mi configuración
 git clone https://github.com/rosasrias/Neovim $env:LOCALAPPDATA\nvim
 
-# Iniciá Neovim para instalar los plugins
+# Inicia Neovim para instalar los plugins
 nvim
 ```
 
-> 💡 Requiere tener instalado **Neovim >= 0.9**, **git**, y un **gestor de plugins compatible con lazy-loading** (ya viene configurado en esta setup).
+> 💡 Requiere tener instalado **Neovim >= 0.9**, **git**, y un **gestor de plugins compatible con lazy-loading** (ya viene configurado en este setup).
 
 ---
 
 ## ⚙️ Estructura del Proyecto
 
-Esta config está dividida de forma modular para mantener claridad y escalabilidad:
+Esta configuración está dividida de forma modular para mantener claridad y escalabilidad:
 
 ```
 ~/.config/nvim
@@ -50,8 +50,6 @@ Esta config está dividida de forma modular para mantener claridad y escalabilid
 ├── ftplugin/               # Configs por tipo de archivo
 └── after/                  # Overrides y ajustes específicos
 ```
-
-Todo está separado por responsabilidad — nada de mezclar opciones, plugins y mappings en un solo archivo gigante 😎
 
 ---
 
@@ -84,7 +82,7 @@ Todo está separado por responsabilidad — nada de mezclar opciones, plugins y 
 
 El esquema de colores y los highlights se manejan desde el módulo `themes/`, que controla dinámicamente los tonos del editor.
 
-> Podés personalizar los colores o temas editando `lua/themes/schemes/*.lua`.
+> Puedes personalizar los colores o temas editando `lua/themes/schemes/*.lua`.
 
 ---
 
@@ -97,15 +95,15 @@ Todos los keymaps están centralizados en `lua/core/mappings.lua`. Algunos desta
 * `<leader>dd` → Abrir debugger.
 * `<leader>tt` → Mostrar TODOs.
 
-> 🧩 Podés redefinir o añadir tus propios bindings ahí sin miedo, todo está desacoplado.
+> 🧩 Puedes redefinir o añadir tus propios bindings ahí sin miedo, todo está desacoplado.
 
 ---
 
 ## 💡 Tips de Uso
 
-* Si es tu primera vez con Neovim, corré `:checkhealth` para verificar dependencias.
+* Si es tu primera vez con Neovim, ejecuta `:checkhealth` para verificar dependencias.
 * El gestor de plugins se encarga del lazy loading — los plugins cargan solo cuando se necesitan.
-* Mantené limpio tu entorno con `:Lazy clean` cada tanto.
+* Manten limpio tu entorno con `:Lazy clean` cada tanto.
 
 ---
 
@@ -159,67 +157,67 @@ Verificar con:
 :LspInfo
 ```
 
-
 Debe aparecer solo:
 
-typescript-tools
-2️⃣ Dependencias necesarias en cada proyecto
+- typescript-tools
+- Dependencias necesarias en cada proyecto
 
 En la raíz del proyecto:
 
+```bash
 npm install --save-dev typescript
 npm install --save-dev typescript-styled-plugin
+```
 
 Esto es obligatorio porque:
 
-typescript-tools necesita tsserver
-
-tsserver viene dentro del paquete typescript
+- typescript-tools necesita tsserver
+- tsserver viene dentro del paquete typescript
 
 El plugin styled necesita estar instalado en el proyecto
 
-3️⃣ Verificación
+### Verificación
 
-Podés verificar que TypeScript está instalado con:
+Puedes verificar que TypeScript está instalado con:
 
+```bash
 npx tsc --version
+```
 
 Si devuelve una versión → todo ok.
 
-4️⃣ Resultado esperado
-
+Resultado esperado 
 En un archivo .jsx o .tsx:
 
+```bash
 const Box = styled.div`
   displ
 `
+```
 
 Debería autocompletar:
-
+```bash
 display
+```
 
 Con sugerencias reales del CSS Language Service.
 
-🧱 Arquitectura del flujo
+### Arquitectura del flujo
 
-Tree-sitter → highlighting
-
-typescript-tools → levanta tsserver
-
-tsserver + typescript-styled-plugin → entiende CSS dentro de template literals
-
-nvim-cmp → muestra el autocomplete
+- Tree-sitter → highlighting
+- typescript-tools → levanta tsserver
+- tsserver + typescript-styled-plugin → entiende CSS dentro de template literals
+- nvim-cmp → muestra el autocomplete
 
 Cada pieza cumple un rol. Si falta una, se rompe la cadena.
 
-
 ---
 
-## 🧱 Filosofía
+##  Filosofía
 
 Este setup sigue la idea de **"modularidad ante todo"**:
 
-> Cada parte cumple su rol. Si algo falla, lo arreglás sin romper el resto.
+> Cada parte cumple su rol. Si algo falla, lo arreglas sin romper el resto.
 
 Ideal para devs que quieren una base sólida sobre la que construir su propio entorno.
 
@@ -232,4 +230,3 @@ Inspirado en ideas de [siduck (NvChad)](https://github.com/NvChad/NvChad) y en m
 ---
 
 **Hecho con ❤️ y un poco de café.**
-
