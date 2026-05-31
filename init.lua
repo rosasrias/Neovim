@@ -37,6 +37,9 @@ vim.filetype.add {
     ["http"] = "http",
   },
 }
+vim.api.nvim_create_user_command("AutoBarrel", function()
+  require("autobarrel").generate()
+end, {})
 
 -- vim.g.db_ui_custom_connections = {
 --   {

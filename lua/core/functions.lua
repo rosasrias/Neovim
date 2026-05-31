@@ -38,10 +38,66 @@ local function wrap_command(cmd)
       local second = vim.trim(parts[2])
       cmd = string.format("%s; if ($?) { %s }", first, second)
     end
-    return { "powershell", "-NoLogo", "-NoProfile", "-Command", cmd }
+
+    return {
+      "powershell",
+      "-NoLogo",
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-Command",
+      cmd,
+    }
   end
 
   return { "bash", "-lc", cmd }
+end
+
+---------------------------------------------------------
+-- Detect LaTeX main file
+---------------------------------------------------------
+local function detect_main_tex()
+  local current = vim.fn.expand "%:p"
+  local lines = vim.fn.readfile(current, "", 15)
+
+  for _, line in ipairs(lines) do
+    local root = line:match "^%%%s*!TEX%s+root%s*=%s*(.+)"
+
+    if root then
+      local dir = vim.fn.fnamemodify(current, ":h")
+      return vim.fn.fnamemodify(dir .. "/" .. root, ":p")
+    end
+  end
+
+  return current
+end
+
+---------------------------------------------------------
+-- Java: detectar clase principal (main)
+---------------------------------------------------------
+local function detect_java_main_class()
+  local file = vim.fn.expand "%:p"
+  local lines = vim.fn.readfile(file)
+
+  if not lines or #lines == 0 then
+    return nil
+  end
+
+  local class_name
+  for _, line in ipairs(lines) do
+    -- Detecta class NombreClase
+    local cls = line:match "class%s+([%w_]+)"
+    if cls then
+      class_name = cls
+    end
+
+    -- Detecta main
+    if line:match "public%s+static%s+void%s+main" and class_name then
+      return class_name
+    end
+  end
+
+  return class_name
 end
 
 ---------------------------------------------------------
@@ -232,6 +288,17 @@ local function build_run()
       [ICONS.BUILD .. " Spring Boot build"] = "mvn -q clean install",
       [ICONS.RUN .. " Java run"] = "java $fileBase",
       [ICONS.RUN .. " Java compile & run"] = "javac % && java $fileBase",
+      [ICONS.RUN .. ICONS.BUILD .. " Java smart run"] = function()
+        local class = detect_java_main_class()
+
+        if not class then
+          notify("No se encontró clase con main", vim.log.levels.ERROR)
+          return
+        end
+
+        local cmd = string.format("javac %% && java %s", class)
+        open_runner_terminal(substitute(cmd), "horizontal")
+      end,
     },
 
     ---------------------------------------------------------
@@ -354,6 +421,50 @@ local function build_run()
           return
         end
         open_runner_terminal("live-server $dir", "horizontal")
+      end,
+    },
+
+    ---------------------------------------------------------
+    -- LaTeX
+    ---------------------------------------------------------
+    tex = {
+      [ICONS.BUILD .. " Build PDF"] = function()
+        local texfile = detect_main_tex()
+
+        local cmd = string.format('latexmk -lualatex -interaction=nonstopmode -synctex=1 "%s"', texfile)
+
+        open_runner_terminal(cmd, "horizontal")
+      end,
+
+      [ICONS.RUN .. ICONS.BUILD .. " Continuous Build"] = function()
+        local texfile = detect_main_tex()
+
+        local cmd = string.format('latexmk -pvc -lualatex -interaction=nonstopmode -synctex=1 "%s"', texfile)
+
+        open_runner_terminal(cmd, "horizontal")
+      end,
+
+      [ICONS.RUN .. " Open PDF"] = function()
+        local texfile = detect_main_tex()
+        local pdf = vim.fn.fnamemodify(texfile, ":r") .. ".pdf"
+
+        if vim.fn.has "win32" == 1 then
+          vim.fn.jobstart({ "cmd", "/c", "start", pdf }, {
+            detach = true,
+          })
+        else
+          vim.fn.jobstart({ "xdg-open", pdf }, {
+            detach = true,
+          })
+        end
+      end,
+
+      [ICONS.BUILD .. " Clean Aux Files"] = function()
+        local texfile = detect_main_tex()
+
+        local cmd = string.format('latexmk -c "%s"', texfile)
+
+        open_runner_terminal(cmd, "horizontal")
       end,
     },
   }
