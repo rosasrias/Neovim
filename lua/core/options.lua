@@ -31,7 +31,7 @@ o.backup = false
 o.writebackup = false
 o.ttyfast = true
 
-o.clipboard = "unnamedplus"
+--o.clipboard = "unnamedplus"
 o.cursorline = true
 o.cursorlineopt = "number"
 
