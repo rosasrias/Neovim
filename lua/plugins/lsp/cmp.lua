@@ -96,7 +96,7 @@ return {
             TypeAlias = " 󰉸 ",
             Generic = " 󰙅 ",
             Instance = " 󰙅 ",
-            Supermaven = " 󰙨",
+            Supermaven = "  ",
           }
           local format_color = require "plugins.lsp.extra.format"
           local icon = kind_icons[item.kind] or ""
@@ -120,9 +120,9 @@ return {
             local client_name = entry.source.source.client.name
             -- Only return Emmet results in styled-component template strings
             return client_name ~= "emmet_language_server"
-              or entry.context.filetype == "css"
-              ---@diagnostic disable-next-line: undefined-global
-              or context.in_treesitter_capture "styled"
+                or entry.context.filetype == "css"
+                ---@diagnostic disable-next-line: undefined-global
+                or context.in_treesitter_capture "styled"
           end,
         },
         { name = "luasnip_choice" },
@@ -132,6 +132,7 @@ return {
         { name = "luasnip" },
         { name = "buffer" },
         { name = "cmdline" },
+        { name = "supermaven" },
       },
     }
   end,
