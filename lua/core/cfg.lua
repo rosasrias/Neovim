@@ -1,7 +1,7 @@
 local M = {}
 
 M.ui = {
-  theme = 'onedarkpro',
+  theme = 'sakura',
   transparency = false,
   statusStyle = 'fancy',
 }
